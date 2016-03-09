@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	<script type="text/javascript" src="../js/mui.min.js" ></script>
+	<script type="text/javascript" src="../js/jquery.min.js" ></script>
+		<script>
+		mui.plusReady(function({
+			// var strurl="http://mb.xczs.co/webserver/WebService1.asmx/GetCustomer_page'";
+			mui.ajax("http://mb.xczs.co/webserver/WebService1.asmx/GetCustomer_page",{
+						data:{
+						"pageIndex":1,
+						"pageSize":999,
+						"where":''
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+						success:function(data){
+							console.log(data)
+						}
+			});
+		}))
+		
+							</script>
+	</body>
+</html>

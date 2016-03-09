@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link href="../css/mui.indexedlist.css" rel="stylesheet" />
+	 
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="../css/app.css"/>
+		<style>
+			html,
+			body {
+				height: 100%;
+				overflow: hidden;
+			}
+			.mui-bar {
+				-webkit-box-shadow: none;
+				box-shadow: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">客户管理<button type="button" class="mui-btn mui-btn-link mui-pull-right">添加</button></h1>
+		</header>
+		
+		<div class="mui-content">
+			<div id='list' class="mui-indexed-list">
+				<div class="mui-indexed-list-search mui-input-row mui-search">
+					<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="姓名 \ 小区 \ 楼号 \ 房号  \ 电话">
+				</div>
+			 	<div class="mui-indexed-list-bar">
+			 	<a>A</a>
+					<a>B</a>
+					<a>C</a>
+					<a>D</a>
+					<a>E</a>
+					<a>F</a>
+					<a>G</a>
+					<a>H</a>
+					<a>I</a>
+					<a>J</a>
+					<a>K</a>
+					<a>L</a>
+					<a>M</a>
+					<a>N</a>
+					<a>O</a>
+					<a>P</a>
+					<a>Q</a>
+					<a>R</a>
+					<a>S</a>
+					<a>T</a>
+					<a>U</a>
+					<a>V</a>
+					<a>W</a>
+					<a>X</a>
+					<a>Y</a>
+					<a>Z</a>
+			 	</div>
+				<div class="mui-indexed-list-alert"></div>
+				<div class="mui-indexed-list-inner">
+					<div class="mui-indexed-list-empty-alert">没有数据</div>
+					<ul id="cus_detail"   class="mui-table-view">
+					<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">左划有惊喜</li>
+ 		
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" src="../js/jquery.min.js" ></script>
+			<script src="../js/mui.indexedlist.js"></script>
+			<script>
+			mui.init();
+			mui.ready(function(){
+				console.log(3);
+				 
+			});
+			mui.plusReady(function(){	
+				//处理
+				mui('#cus_detail').on('tap', '.mui-btn', function(event) {
+						var elem = this;
+						var indexWebview = plus.webview.getWebviewById('spider');
+						var strid=elem.getAttribute('id');
+						if(strid.substr(0, 2)=='tl')//电话
+						{	
+							console.log(1)
+							plus.device.dial(strid.substring(2,strid.length));
+						}
+						else if(strid.substr(0, 2)=='xx')//详细
+						{
+							console.log(strid.substring(2,strid.length))
+								mui.fire(indexWebview,'getdetail',{id:strid.substring(2,strid.length)});
+							//打开新闻详情
+							  mui.openWindow({
+							    id:'kh_gj_mx',
+							    url:'kh_gj_mx.html'
+							  });
+						}
+						else if(strid.substr(0, 2)=='gj')//跟进
+						{
+							console.log(strid.substring(2,strid.length))
+							mui.fire(indexWebview,'getdetail',{id:strid.substring(2,strid.length)});
+							//打开新闻详情
+							  mui.openWindow({
+							    id:'kh_gj',
+							    url:'kh_gj.html'
+							  });
+						} 
+				});
+				
+				//动态获取数据
+		   var strurl="http://mb.xczs.co/webserver/WebService1.asmx/GetCustomer_page";
+			mui.ajax(strurl,{
+						data:{
+						"pageIndex":1,
+						"pageSize":999,
+						"where":''
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+						success:function(data){
+				    var table = document.body.querySelector('.mui-table-view');
+					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+							$.each(data.detail.list, function(index, _data) {
+						var li = document.createElement('li');
+						  li.setAttribute("data-value", _data.Customer );
+					     li.setAttribute("data-tags", _data.address);
+					      li.setAttribute("data-tel", _data.tel);
+						li.className = 'mui-table-view-cell mui-indexed-list-item';  
+						    html =' <div class="mui-slider-right mui-disabled">'+
+						'<a id=tl'+ _data.tel +' class="mui-btn mui-btn-green mui-icon mui-icon-phone"></a>'+
+					'<a id=gj' + _data.id + ' class="mui-btn mui-btn-purple">跟进</a>' +
+						'<a id=xx' + _data.id + ' class="mui-btn mui-btn-blue" >详细</a>' +
+					'</div>' +
+ 
+						' <div class="mui-table mui-media-body mui-slider-handle">'+
+	
+						  '<h4 class="mui-ellipsis">' + _data.Customer + '</h4>'+
+						      '  <p class="mui-h6 mui-ellipsis"><font color="blueviolet">【'+ _data.CustomerType+'】</font>' + _data.address + '</p>'+
+						  '</div></a>'; 
+					 
+				
+						li.innerHTML =html
+
+						table.appendChild(li);
+						});
+						var header = document.querySelector('header.mui-bar');
+				var list = document.getElementById('list');
+				//calc hieght
+				list.style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+				//create
+				window.indexedList = new mui.IndexedList(list);
+					},
+			error:function(xhr,type,errorThrown) {
+				console.log(type)
+			}
+				});
+		 
+			});
+			</script>
+</body>
+
+</html>

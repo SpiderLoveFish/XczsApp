@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>心成</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style type="text/css">
+			.mui-bar{
+				background-color: rgba(0,153,204,.9);
+			}
+			.mui-icon{
+				color: #FFFFFF;
+			}
+		</style>	
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-icon mui-icon-bars mui-pull-left"></a>
+			<a id="info" class="mui-icon mui-icon-help mui-pull-right"></a>
+			<h1 class="mui-title" style="color: #FFFFFF;">心成装饰</h1>
+		</header>
+		<script src="js/mui.min.js"></script>
+		<script src="js/update.js"></script>
+		<script>
+			var menu = null,
+				main = null;
+			var showMenu = false;
+			
+			mui.plusReady(function() {
+					plus.storage.setItem("_user_token", "0AA223C635F21CA892E33AC7139FB3CD");
+				//读取本地存储，检查是否为首次启动
+				var showGuide = plus.storage.getItem("lauchFlag");
+				if(showGuide){
+					//有值，说明已经显示过了，无需显示；
+					//关闭splash页面；
+					plus.navigator.closeSplashscreen();
+					plus.navigator.setFullscreen(false);
+				}else{
+					//显示启动导航
+					mui.openWindow({
+						id:'guide',
+						url:'guide.html',
+						show:{
+							aniShow:'none'
+						},
+						waiting:{
+							autoShow:false
+						}
+					});
+				}
+			});
+			mui.init({
+				swipeBack: false,
+			//	plus.navigator.setStatusBarBackground('#f7f7f7');
+				statusBarBackground: '#f7f7f7',
+				gestureConfig: {
+					doubletap: true
+				},
+				subpages: [{
+					id: 'main',
+					url: 'main.html',
+					styles: {
+						top: '45px',
+						bottom: 0,
+						bounce: 'vertical'
+					}
+				}]
+			});
+			mui.plusReady(function() {
+			 	//改变statusbar
+			plus.navigator.setStatusBarBackground('#f7f7f7');
+			});
+		 
+			 //点击左上角侧滑图标，
+			document.querySelector('.mui-icon-bars').addEventListener('tap', function(e) {
+				 
+			});
+			//点击右上角侧滑图标，
+			document.querySelector('.mui-icon-help').addEventListener('tap', function(e) {
+				 
+			});
+			 //敲击顶部导航，内容区回到顶部
+			document.querySelector('header').addEventListener('doubletap', function() {
+				main.children()[0].evalJS('mui.scrollTo(0, 100)');
+			});
+		 
+		
+			//首页返回键处理
+			//处理逻辑：1秒内，连续两次按返回键，则退出应用；
+			var first = null;
+			mui.back = function() {
+			  {
+					//首次按键，提示‘再按一次退出应用’
+					if (!first) {
+						first = new Date().getTime();
+						mui.toast('再按一次退出应用');
+						setTimeout(function() {
+							first = null;
+						}, 1000);
+					} else {
+						if (new Date().getTime() - first < 1000) {
+							plus.runtime.quit();
+						}
+					}
+				}
+			};	
+		</script>
+	</body>
+</html>

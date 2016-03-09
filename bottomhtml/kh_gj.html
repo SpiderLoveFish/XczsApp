@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>客户跟进</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css"/>
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+		</style> 
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">客户跟进<button type="button" class="mui-btn mui-btn-link mui-pull-right">保存</button></h1>
+		</header>
+		
+		
+		<div class="mui-content">
+			
+			<div class="mui-content-padded" style="margin: 5px;">
+			<p></p>	
+			<h5 class="mui-content-padded" style="margin: 15px 10px;"><font color="black">客户：</font>张君（18912688102）</h5>
+			<h5 class="mui-content-padded" style="margin: 15px 10px;"><font color="black">地址：</font>陆家镇夏桥家园29栋1107室</h5>
+			<p></p>		
+			<hr />
+					<div class="mui-content-padded">
+				
+				<select class="mui-btn mui-btn-block">
+					<option value="item-1">电话</option>
+					<option value="item-2">网络</option>
+					<option value="item-3">到店</option>
+				</select>
+				</div>
+			<div class="mui-input-row" style="margin: 10px 5px;">
+				<textarea id="textarea" rows="8" placeholder="填写跟进内容"></textarea>
+			</div>
+      	<div class="mui-card" style="margin: 100px 25px 25px 25px;">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;">
+						 <div class="mui-media-body">
+                            	<p class='mui-ellipsis' align="center">查看跟进记录<span class="mui-badge" ><font color="red">99</font></span></p>
+							</div>
+						</a>
+					</li>
+					</div>
+					
+			</div>
+			</div>
+				
+			
+		</div>
+
+	</body>
+	<script src="../js/mui.min.js"></script>
+	
+	</body>
+
+</html>

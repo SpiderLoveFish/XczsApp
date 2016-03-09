@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>HelloWorld</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<style>
+			#logout {
+				line-height: 45px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+	 
+			<a href="javascript:createTopic();" id="createTopic" class="mui-pull-right mui-hidden">
+				<span class="mui-icon mui-icon-compose"></span>
+			</a>
+			<h1 class="mui-title" id="tab-title"></h1>
+		</header>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/bbscommon.js"></script>
+		<script>
+			var menu = null,
+				main = null;
+			var showMenu = false;
+			mui.init({
+				swipeBack: true,
+				statusBarBackground: '#f7f7f7',
+				gestureConfig: {
+					doubletap: true
+				},
+				subpages: [{
+					id: 'list',
+					url: 'list.html',
+					styles: {
+						top: '45px',
+						bottom: 0,
+						bounce: 'vertical'
+					},
+					show:{
+						aniShow: 'slide-in-right'
+					}
+				}]
+			});
+		  //根据id向服务器请求新闻详情
+			mui.plusReady(function() {
+				if (mui.os.android) {
+					plus.screen.lockOrientation("portrait-primary");
+				}
+				plus.storage.setItem(_user_token, '090aef9ccbef4560b1b1449e1f754a84');
+				plus.storage.setItem(_tab_, 'all');
+				plus.storage.setItem(reply_weiba_active, 'true');
+				main = plus.webview.currentWebview();
+		 
+			});
+		   
+			 
+			window.addEventListener('showCreateTopic',function(event){
+				document.getElementById("createTopic").className = "mui-pull-right mui-block";
+			});
+			window.addEventListener('hideCreateTopic',function(event){
+				document.getElementById("createTopic").className = "mui-pull-right mui-hidden";
+			});
+			function createTopic() {
+				mui.openWindow({
+					id: 'create.html',
+					url: 'create.html'
+				});
+			}
+		</script>
+	</body>
+
+</html>
