@@ -55,19 +55,31 @@
 			});
 			var p = 1;
 			function pulldownRefresh() {
+			var strwhere=" 1=1";
+			var _tab=	plus.storage.getItem(_tab_);
+			if(_tab=="all")strwhere=" 1=1";
+			else	 if(_tab=="good") strwhere=" good=1";
+			else	
+			strwhere=" tab='"+_tab+"'";
 				mui.ajax({
 					type: "get",
 					url: _baseUrl + "/Getf_Topic",
 					data: {
 						PageIndex: "1",
 						PageSize: "20",
-						strwhere: " 1=1 " 
+						strwhere: strwhere 
 						//"+plus.storage.getItem(_tab_)
 					},
 					async: true,
 					dataType: "json",
 					success: function(data) {
 						p = 2;
+							if(data.code!=200)
+							{
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						    mui('#pullrefresh').pullRefresh().refresh(true);	
+							}else
+							{
 						var topic_list = $("#topic_list");
 						topic_list.html("");
 						$.each(data.detail.list, function(index, _data) {
@@ -94,10 +106,17 @@
 						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
 						mui('#pullrefresh').pullRefresh().refresh(true);
 					}
+				}
 				});
 			}
 
 			function pullupRefresh() {
+			var strwhere=" 1=1";
+			var _tab=	plus.storage.getItem(_tab_);
+			if(_tab=="all")strwhere=" 1=1";
+			else	 if(_tab=="good") strwhere=" good=1";
+			else	
+			strwhere=" tab='"+_tab+"'";
 		
 				mui.ajax({
 					type: "get",
@@ -105,16 +124,22 @@
 					data: {
 						PageIndex: p,
 						PageSize: "20",
-						strwhere: "1=1"
+						strwhere: strwhere
 						//plus.storage.getItem(_tab_)
 					},
 					async: true,
 					dataType: "json",
 					success: function(data) {
-						
 						p++; 
+							if(data.code!=200)
+							{
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh((p > 0));	
+							}else
+							{
 						mui('#pullrefresh').pullRefresh().endPullupToRefresh((p > data.detail.totalRow)); //参数为true代表没有更多数据了。
 						var topic_list = $("#topic_list");
+							topic_list.html("");
+						
 						$.each(data.detail.list, function(index, _data) {
 							var span = getTopicTab(_data);
 							var html = '<li class="mui-table-view-cell">' +
@@ -135,7 +160,8 @@
 							'</li>';
 							topic_list.append(html);
 						});
-					}
+						}
+							}
 				});
 			}
 			if (mui.os.plus) {

@@ -57,6 +57,7 @@
 			mui.plusReady(function() {
 				parent = plus.webview.currentWebview().opener();
 				var tid = plus.storage.getItem(_topic_id);
+				console.log(tid)
 				if(isLogin()) {
 					document.getElementById("reply_nav").className = "mui-bar mui-bar-footer";
 				}
@@ -140,6 +141,7 @@
 			});
 			
 			mui('#reply_list').on('tap', 'a', function() {
+				console.log('em')
 				var href=this.getAttribute("href");
 				mui.openWindow({
 					id: 'embed.html',
@@ -159,18 +161,20 @@
 				if(e.keyCode == 13) {
 					var reply_input = $("#reply_input");
 					var reply_list = $("#reply_list");
-					console.log(reply_input.val() + (plus.storage.getItem(reply_weiba_active) == 'true' ? reply_weiba : ""))
+					console.log( reply_input.val() + (plus.storage.getItem(reply_weiba_active) == 'true' ? reply_weiba : ""))
 					if($.trim(reply_input.val()) == "") {
 						mui.toast("回复内容不能为空");
 					} else {
+						var usertoken=plus.storage.getItem(_user_token);
+						var tid=plus.storage.getItem(_topic_id);
 						 mui.ajax({
 						type: "post",
-						url: _baseUrl + "/Getf_reply_creatGetf_reply_creat",
+						url: _baseUrl + "/Getf_reply_creat",
 						data: {
-							token: plus.storage.getItem(_user_token),
-								tid: plus.storage.getItem(_topic_id),
+							    token:usertoken,
+								tid:tid,
 								title:"reply",
-								content: reply_input.val() + (plus.storage.getItem(reply_weiba_active) == 'true' ? reply_weiba : "")
+								content:reply_input.val() + (plus.storage.getItem(reply_weiba_active) == 'true' ? reply_weiba : "")
 						},
 						async: true,
 						dataType: "json",

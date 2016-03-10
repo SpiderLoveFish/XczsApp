@@ -7,16 +7,39 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link rel="stylesheet" href="../css/mui.min.css">
+				<link href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 		<style>
 			#logout {
 				line-height: 45px;
 			}
+			.test li{float:left;} 
 		</style>
 	</head>
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-	 
+			 <ul class="mui-table-view test" id="ul_topics">
+				<li class="mui-table-view-cell">
+					<a  type="topic" href="javascript:reflashlist('all');" tab="all">
+						最新
+					</a>
+				</li>
+				<li class="mui-table-view-cell" >
+					<a type="topic"  href="javascript:reflashlist('good');" tab="good">
+						精华
+					</a>
+				</li>
+				<li class="mui-table-view-cell" >
+					<a type="topic" href="javascript:reflashlist('ask');" tab="ask">
+						交流
+					</a>
+				</li>
+				<li class="mui-table-view-cell" >
+					<a type="topic" href="javascript:reflashlist('irrigation');" tab="irrigation">
+						灌水
+					</a>
+				</li>
+			</ul>
 			<a href="javascript:createTopic();" id="createTopic" class="mui-pull-right mui-hidden">
 				<span class="mui-icon mui-icon-compose"></span>
 			</a>
@@ -52,13 +75,15 @@
 				if (mui.os.android) {
 					plus.screen.lockOrientation("portrait-primary");
 				}
-				plus.storage.setItem(_user_token, '090aef9ccbef4560b1b1449e1f754a84');
+				plus.storage.setItem(_user_token, '0AA223C635F21CA892E33AC7139FB3CD');
 				plus.storage.setItem(_tab_, 'all');
 				plus.storage.setItem(reply_weiba_active, 'true');
 				main = plus.webview.currentWebview();
 		 
 			});
-		   
+		 		window.addEventListener('showCreateTopic',function(event){
+				document.getElementById("createTopic").className = "mui-pull-right mui-block";
+			});
 			 
 			window.addEventListener('showCreateTopic',function(event){
 				document.getElementById("createTopic").className = "mui-pull-right mui-block";
@@ -71,6 +96,13 @@
 					id: 'create.html',
 					url: 'create.html'
 				});
+			}
+			function reflashlist(tab) {
+				console.log(tab);
+				var list = plus.webview.getWebviewById('list');
+						plus.storage.setItem(_tab_, tab);
+						list.loadURL("list.html");
+						list.reload();
 			}
 		</script>
 	</body>

@@ -29,7 +29,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">客户管理<button type="button" class="mui-btn mui-btn-link mui-pull-right">添加</button></h1>
+			<h1 class="mui-title">客户管理</h1><button type="button" class="mui-btn mui-btn-link mui-pull-right">添加</button>
 		</header>
 		
 		<div class="mui-content">
@@ -88,7 +88,7 @@
 				//处理
 				mui('#cus_detail').on('tap', '.mui-btn', function(event) {
 						var elem = this;
-						var indexWebview = plus.webview.getWebviewById('spider');
+						
 						var strid=elem.getAttribute('id');
 						if(strid.substr(0, 2)=='tl')//电话
 						{	
@@ -97,22 +97,29 @@
 						}
 						else if(strid.substr(0, 2)=='xx')//详细
 						{
-							console.log(strid.substring(2,strid.length))
+							var indexWebview = plus.webview.getWebviewById('kh_gj');
 								mui.fire(indexWebview,'getdetail',{id:strid.substring(2,strid.length)});
 							//打开新闻详情
 							  mui.openWindow({
 							    id:'kh_gj_mx',
-							    url:'kh_gj_mx.html'
+							    url:'kh_gj_mx.html',
+							    extras:{
+							        cid:strid.substring(2,strid.length) 
+							    }
 							  });
 						}
 						else if(strid.substr(0, 2)=='gj')//跟进
 						{
-							console.log(strid.substring(2,strid.length))
-							mui.fire(indexWebview,'getdetail',{id:strid.substring(2,strid.length)});
+								var indexWebview = plus.webview.getWebviewById('kh_gj_mx');
+							mui.fire(indexWebview,'getdetail',{id:strid});
 							//打开新闻详情
 							  mui.openWindow({
 							    id:'kh_gj',
-							    url:'kh_gj.html'
+							    url:'kh_gj.html',
+							    extras:{
+							        cid:strid.substring(2,strid.length) 
+							  
+							    }
 							  });
 						} 
 				});

@@ -1,1 +1,197 @@
-null
+{
+  "bottomhtml/setting.html": {
+    "href": "bottomhtml/setting.html",
+    "resources": [
+      "js/mui.min.js",
+      "js/jquery.min.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "bottomhtml/embed.html": {
+    "href": "bottomhtml/embed.html",
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/jquery.min.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "bottomhtml/topic-detail_sub.html": {
+    "href": "bottomhtml/topic-detail_sub.html",
+    "resources": [
+      "css/mui.min.css",
+      "dist/css/wangEditor.min.css",
+      "css/bbsapp.css",
+      "js/mui.min.js",
+      "js/jquery.min.js",
+      "dist/js/wangEditor.min.js",
+      "js/bbscommon.js"
+    ],
+    "refer": [
+      "bottomhtml/topic-detail.html",
+      "bottomhtml/embed.html"
+    ],
+    "priority": 0
+  },
+  "bottomhtml/topic-detail.html": {
+    "href": "bottomhtml/topic-detail.html",
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/bbscommon.js"
+    ],
+    "refer": [
+      "bottomhtml/topic-detail.html",
+      "bottomhtml/topic-detail_sub.html"
+    ],
+    "priority": 0
+  },
+  "bottomhtml/list.html": {
+    "href": "bottomhtml/list.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/bbsapp.css",
+      "js/mui.min.js",
+      "js/jquery.min.js",
+      "js/bbscommon.js"
+    ],
+    "refer": [
+      "bottomhtml/topic-detail.html"
+    ],
+    "priority": 0
+  },
+  "bottomhtml/create.html": {
+    "href": "bottomhtml/create.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/mui.listpicker.css",
+      "css/mui.poppicker.css",
+      "css/bbsapp.css",
+      "dist/css/wangEditor.min.css",
+      "js/mui.min.js",
+      "js/jquery.min.js",
+      "js/mui.listpicker.js",
+      "js/mui.poppicker.js",
+      "js/bbscommon.js",
+      "dist/js/wangEditor.min.js"
+    ],
+    "refer": [
+      "bottomhtml/topic-detail.html"
+    ],
+    "priority": 0
+  },
+  "bottomhtml/inform.html": {
+    "href": "bottomhtml/inform.html",
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js",
+      "js/bbscommon.js"
+    ],
+    "refer": [
+      "bottomhtml/topic-detail.html",
+      "bottomhtml/list.html",
+      "bottomhtml/create.html"
+    ],
+    "priority": 0
+  },
+  "bottomhtml/test.html": {
+    "href": "bottomhtml/test.html",
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "bottomhtml/kh_gj.html": {
+    "href": "bottomhtml/kh_gj.html",
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/mui.poppicker.css"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "bottomhtml/kh_gj_mx.html": {
+    "href": "bottomhtml/kh_gj_mx.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/app.css",
+      "js/mui.min.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "bottomhtml/kh_list.html": {
+    "href": "bottomhtml/kh_list.html",
+    "resources": [
+      "css/mui.min.css",
+      "css/mui.indexedlist.css",
+      "css/app.css",
+      "js/mui.min.js",
+      "js/jquery.min.js",
+      "js/mui.indexedlist.js"
+    ],
+    "refer": [
+      "bottomhtml/kh_gj.html",
+      "bottomhtml/kh_gj_mx.html"
+    ],
+    "priority": 0
+  },
+  "bottomhtml/index.html": {
+    "href": "bottomhtml/index.html",
+    "resources": [
+      "js/mui.min.js",
+      "js/own.js",
+      "css/mui.min.css",
+      "css/app.css"
+    ],
+    "refer": [
+      "bottomhtml/test.html",
+      "bottomhtml/kh_list.html"
+    ],
+    "priority": 0
+  },
+  "bottomhtml/work.html": {
+    "href": "bottomhtml/work.html",
+    "priority": 0
+  },
+  "main.html": {
+    "href": "main.html",
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js"
+    ],
+    "refer": [
+      "bottomhtml/setting.html",
+      "bottomhtml/inform.html",
+      "bottomhtml/index.html",
+      "bottomhtml/work.html"
+    ],
+    "priority": 0
+  },
+  "guide.html": {
+    "href": "guide.html",
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js"
+    ],
+    "refer": [],
+    "priority": 0
+  },
+  "index.html": {
+    "href": "index.html",
+    "resources": [
+      "css/mui.min.css",
+      "js/mui.min.js"
+    ],
+    "refer": [
+      "main.html",
+      "guide.html"
+    ],
+    "priority": 0
+  }
+}

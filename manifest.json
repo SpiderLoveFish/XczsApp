@@ -115,6 +115,7 @@
 				"appid": "",/*iOS应用标识，苹果开发网站申请的appid，如io.dcloud.HelloH5*/
 				"mobileprovision": "",/*iOS应用打包配置文件*/
 				"password": "",/*iOS应用打包个人证书导入密码*/
+				"StatusBarBackground":"#f7f7f7",
 				"p12": "",/*iOS应用打包个人证书，打包配置文件关联的个人证书*/
 				"devices": "universal",/*iOS应用支持的设备类型，可取值iphone/ipad/universal*/
 				"frameworks": []
@@ -188,6 +189,235 @@
 					"xxhdpi": ""
 				}
 			}
+		}
+	},
+	"dependencies":{
+		"pages": {
+			"bottomhtml/setting.html": {
+				"href": "bottomhtml/setting.html",
+				"resources": [
+					"js/mui.min.js",
+					"js/jquery.min.js"
+				],
+				"priority": 0
+			},
+			"bottomhtml/embed.html": {
+				"href": "bottomhtml/embed.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"js/mui.min.js",
+					"js/jquery.min.js"
+				],
+				"priority": 3
+			},
+			"bottomhtml/topic-detail_sub.html": {
+				"href": "bottomhtml/topic-detail_sub.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"dist/css/wangEditor.min.css",
+					"dist/css/fonts/icomoon.eot",
+					"dist/css/fonts/icomoon.ttf",
+					"dist/css/fonts/icomoon.woff",
+					"dist/css/fonts/icomoon.svg",
+					"css/bbsapp.css",
+					"js/mui.min.js",
+					"js/jquery.min.js",
+					"dist/js/wangEditor.min.js",
+					"js/bbscommon.js"
+				],
+				"refer": [
+					"bottomhtml/topic-detail.html",
+					"bottomhtml/embed.html"
+				],
+				"priority": 2
+			},
+			"bottomhtml/topic-detail.html": {
+				"href": "bottomhtml/topic-detail.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"js/mui.min.js",
+					"js/bbscommon.js"
+				],
+				"refer": [
+					"bottomhtml/topic-detail.html",
+					"bottomhtml/topic-detail_sub.html"
+				],
+				"priority": 1
+			},
+			"bottomhtml/list.html": {
+				"href": "bottomhtml/list.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"css/bbsapp.css",
+					"js/mui.min.js",
+					"js/jquery.min.js",
+					"js/bbscommon.js"
+				],
+				"refer": [
+					"bottomhtml/topic-detail.html"
+				],
+				"priority": 2
+			},
+			"bottomhtml/create.html": {
+				"href": "bottomhtml/create.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"css/mui.listpicker.css",
+					"css/mui.poppicker.css",
+					"css/bbsapp.css",
+					"dist/css/wangEditor.min.css",
+					"dist/css/fonts/icomoon.eot",
+					"dist/css/fonts/icomoon.ttf",
+					"dist/css/fonts/icomoon.woff",
+					"dist/css/fonts/icomoon.svg",
+					"js/mui.min.js",
+					"js/jquery.min.js",
+					"js/mui.listpicker.js",
+					"js/mui.poppicker.js",
+					"js/bbscommon.js",
+					"dist/js/wangEditor.min.js"
+				],
+				"refer": [
+					"bottomhtml/topic-detail.html"
+				],
+				"priority": 3
+			},
+			"bottomhtml/inform.html": {
+				"href": "bottomhtml/inform.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"js/mui.min.js",
+					"js/bbscommon.js"
+				],
+				"refer": [
+					"bottomhtml/topic-detail.html",
+					"bottomhtml/list.html",
+					"bottomhtml/create.html"
+				],
+				"priority": 1
+			},
+			"bottomhtml/test.html": {
+				"href": "bottomhtml/test.html",
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"fonts/mui.ttf"
+				],
+				"priority": 2
+			},
+			"bottomhtml/kh_gj.html": {
+				"href": "bottomhtml/kh_gj.html",
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"css/mui.poppicker.css"
+				],
+				"priority": 3
+			},
+			"bottomhtml/kh_gj_mx.html": {
+				"href": "bottomhtml/kh_gj_mx.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"css/app.css",
+					"js/mui.min.js"
+				],
+				"priority": 4
+			},
+			"bottomhtml/kh_list.html": {
+				"href": "bottomhtml/kh_list.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"css/mui.indexedlist.css",
+					"css/app.css",
+					"js/mui.min.js",
+					"js/jquery.min.js",
+					"js/mui.indexedlist.js"
+				],
+				"refer": [
+					"bottomhtml/kh_gj.html",
+					"bottomhtml/kh_gj_mx.html"
+				],
+				"priority": 3
+			},
+			"bottomhtml/index.html": {
+				"href": "bottomhtml/index.html",
+				"resources": [
+					"js/mui.min.js",
+					"js/own.js",
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"css/app.css"
+				],
+				"refer": [
+					"bottomhtml/test.html",
+					"bottomhtml/kh_list.html"
+				],
+				"priority": 2
+			},
+			"bottomhtml/work.html": {
+				"href": "bottomhtml/work.html",
+				"priority": 3
+			},
+			"main.html": {
+				"href": "main.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"js/mui.min.js"
+				],
+				"refer": [
+					"bottomhtml/setting.html",
+					"bottomhtml/inform.html",
+					"bottomhtml/index.html",
+					"bottomhtml/work.html"
+				],
+				"priority": 0
+			},
+			"guide.html": {
+				"href": "guide.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"js/mui.min.js"
+				],
+				"priority": 1
+			},
+			"index.html": {
+				"href": "index.html",
+				"resources": [
+					"css/mui.min.css",
+					"fonts/mui.ttf",
+					"js/mui.min.js"
+				],
+				"refer": [
+					"main.html",
+					"guide.html"
+				],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"dist/css/wangEditor.css",
+				"dist/js/wangEditor.js",
+				"dist/js/lib/jquery-1.10.2.min.js",
+				"unlock.html",
+				"login.html",
+				"js/mui.js",
+				"css/mui.css",
+				"dist/js/lib/jquery-2.2.1.js",
+				"dist/css/wangEditor.less",
+				"README.md"
+			]
 		}
 	}
 }

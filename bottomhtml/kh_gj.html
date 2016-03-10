@@ -10,8 +10,9 @@
 
 		<!--标准mui.css-->
 		<link rel="stylesheet" href="../css/mui.min.css">
-		<link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.listpicker.css" rel="stylesheet" />
 		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+			<link href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 		<!--App自定义的css-->
 		<link rel="stylesheet" type="text/css" href="css/app.css"/>
 		<style>
@@ -26,7 +27,8 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">客户跟进<button type="button" class="mui-btn mui-btn-link mui-pull-right">保存</button></h1>
+			<h1 class="mui-title">客户跟进</h1>
+				<a href="javascript:save();" class="mui-pull-right" style="line-height: 44px;margin-right: 5px;">提交</a>
 		</header>
 		
 		
@@ -34,27 +36,25 @@
 			
 			<div class="mui-content-padded" style="margin: 5px;">
 			<p></p>	
-			<h5 class="mui-content-padded" style="margin: 15px 10px;"><font color="black">客户：</font>张君（18912688102）</h5>
-			<h5 class="mui-content-padded" style="margin: 15px 10px;"><font color="black">地址：</font>陆家镇夏桥家园29栋1107室</h5>
+			<h5 class="mui-content-padded" style="margin: 15px 10px;"><font color="black">客户：</font>	 <span id='skh'></span></h5>
+		
+			<h5 class="mui-content-padded" style="margin: 15px 10px;"><font color="black">地址：</font> <span id='sdz'></span></h5>
 			<p></p>		
 			<hr />
-					<div class="mui-content-padded">
-				
-				<select class="mui-btn mui-btn-block">
-					<option value="item-1">电话</option>
-					<option value="item-2">网络</option>
-					<option value="item-3">到店</option>
-				</select>
-				</div>
+					<div class="form-group">
+					<input type="hidden" id="tid" value="1">
+					<button id='showSectionPicker'  class="mui-btn mui-btn-block" type='button'>电话</button>
+ 
+			</div>
 			<div class="mui-input-row" style="margin: 10px 5px;">
 				<textarea id="textarea" rows="8" placeholder="填写跟进内容"></textarea>
 			</div>
-      	<div class="mui-card" style="margin: 100px 25px 25px 25px;">
+      	<div class="mui-card" style="margin: 50px 25px 25px 25px;">
 				<ul class="mui-table-view">
 					<li class="mui-table-view-cell mui-media">
-						<a href="javascript:;">
+						<a href="javascript:view();">
 						 <div class="mui-media-body">
-                            	<p class='mui-ellipsis' align="center">查看跟进记录<span class="mui-badge" ><font color="red">99</font></span></p>
+                            	<p class='mui-ellipsis' align="center">查看跟进记录<span class="mui-badge" ><font color="red">1</font></span></p>
 							</div>
 						</a>
 					</li>
@@ -67,8 +67,122 @@
 		</div>
 
 	</body>
-	<script src="../js/mui.min.js"></script>
+<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/mui.listpicker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+	<script src="../js/bbscommon.js"></script>
+			<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var sectionPicker = new mui.PopPicker();
+			var pickerData = [];
+			var cid;
+			mui.plusReady(function() {
+				getSection();
+				var self = plus.webview.currentWebview();
+				  cid = self.cid;
+		         mui.ajax({
+					type: "get",
+					url: _url + '/webserver/WebService1.asmx/GetCustomer_where',
+					data: {
+						where:cid
+					},
+					async: true,
+					dataType: "json",
+					success: function(data) {
+					 
+						if(data.code == 200) {
+							$.each(data.detail, function(index, _data) {
+					var kh=	document.getElementById("skh");
+					var dz=document.getElementById("sdz");
+					kh.innerHTML =_data.Customer+'('+_data.tel+')';
+					dz.innerHTML =_data.address;
+						})
+						}
+							},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						console.log(type);
+						}
+				});
+		});
+			function getSection() {
+			
+				mui.ajax({
+					url: _url + '/webserver/WebService1.asmx/Get_FllowType',
+					dataType: 'json',
+					async: true,
+					type: 'get',
+					success: function(data) {
+						if(data.code == 200) {
+							$.each(data.detail, function(index, _data) {
+								pickerData.push({value: _data.id, text: _data.params_name});
+							});
+							sectionPicker.setData(pickerData);
+						
+						} else {
+							plus.nativeUI.alert(data.description);
+						}
+					},error:function(xhr,type,errorThrown) {
+				console.log(type)
+			}
+				})
+			}
+			var showSectionPickerButton = document.getElementById('showSectionPicker');
+			showSectionPickerButton.addEventListener('tap', function(event) {
+				sectionPicker.show(function(items) {
+					console.log(items[0].value);
+					document.getElementById("tid").value = items[0].value;
+					showSectionPickerButton.value = items[0].text;
+				});
+			}, false);
+		 
+			function save() {
+				
+				var tid = document.getElementById("tid");
+				var content = document.getElementById("textarea");
+				  if(trim(content.value).length == 0) {
+					mui.toast("请输入内容");
+				} else {
+					mui.ajax({
+						type: "post",
+						url: _url + '/webserver/WebService1.asmx/InsertCRM_Follow',
+						data: {
+							cid: cid,
+							follow: content.value,
+							type: tid.value,
+							id: 1//暂时默认1
+						},
+						async: true,
+						dataType: "json",
+						success: function(data) {
+							if(data.code == 200) {
+ 
+								content.value = "";
+							//	topic_detail(data.detail.id);
+								mui.toast(data.description);
+							} else {
+								mui.toast(data.description);
+							}
+						}
+					});
+				}
+			}
 	
+			function view()
+			{
+	  mui.openWindow({
+				   id:'kh_gj_mx',
+				    url:'kh_gj_mx.html',
+				    extras:{
+				        cid:cid
+				  
+				    }
+				  });
+				
+			}
+	
+		</script>
 	</body>
 
 </html>

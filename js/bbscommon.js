@@ -10,6 +10,7 @@ var reply_weiba = "<br>来自手机客户端 <a target='_blank' href='http://xcz
 var countnotreadtime = 300000;
 
 function topic_detail(tid) {
+	console.log(tid)
 	plus.storage.setItem(_topic_id, tid);
 	mui.openWindow({
 		id: 'detail',
