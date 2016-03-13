@@ -1,13 +1,30 @@
+
+
 var _baseUrl = "http://mb.xczs.co/webserver/bbsapi.asmx";
-var _url="http://mb.xczs.co/";
+var _url=getUrl()+'/' ;
+//"http://mb.xczs.co/";
 //var _baseUrl = "http://localhost:8080";
-var _user_token = "607b879cd56346358e8d17ada25a4f78";
+var _user_token = "_user_token";
 var _user_nickname = "user_nickname";
 var _tab_ = '_tab_';
 var _topic_id = "topic_id";
 var reply_weiba_active = 'reply_weiba_active';
-var reply_weiba = "<br>来自手机客户端 <a target='_blank' href='http://xczs.co'>xczs_mobile</a>"
+var reply_weiba = '</br>来自手机客户端 <span style="color:green;">xczs_mobile</span>'
 var countnotreadtime = 300000;
+
+//状态
+function getUrl() {
+	setUrl("http://mb.xczs.co");
+	var settingsText = localStorage.getItem('$lurdata') || "{}";
+	if(settingsText=='{}')
+	setUrl("http://mb.xczs.co");
+	console.log(settingsText)
+		return JSON.parse(settingsText);
+}
+function setUrl(state) {
+	state = state || {};
+		localStorage.setItem('$lurdata', JSON.stringify(state));
+}
 
 function topic_detail(tid) {
 	console.log(tid)
@@ -21,9 +38,9 @@ function topic_detail(tid) {
 function getTopicTab(_data) {
 	var span_content;
 	if ((_data.good == 1 && _data.t_top == 1) || (_data.good == 0 && _data.t_top == 1)) {
-		span_content = "置顶";
+		span_content = '<span style="color:red;">置顶</span>';
 	} else if (_data.t_top == 0 && _data.good == 1) {
-		span_content = "精华";
+		span_content = '<span style="color:green;">精华</span>';;
 	} else if (_data.t_top == 0 && _data.good == 0) {
 		span_content = _data.sectionName;
 	}
@@ -66,3 +83,20 @@ function isLogin() {
   	 }
         return   year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;       
     }   
+
+function myHTMLDeCode(str) {
+    var s = "";
+    if (str == null) return "";
+    else
+        if (str.length == 0) return "";
+        else {
+            s = str.replace(/&amp;/g, "&");
+            s = s.replace(/&lt;/g, "<");
+            s = s.replace(/&gt;/g, ">");
+            //s = s.replace(/&nbsp;/g, " ");
+            s = s.replace(/&#39;/g, "\'");
+            s = s.replace(/&quot;/g, "\"");
+            s = s.replace(/<br>/g, "\n");
+            return s;
+        }
+}

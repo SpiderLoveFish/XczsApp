@@ -12,11 +12,14 @@
 			body {
 				background-color: #efeff4;
 			}
+			.own-main-background-color {
+		background-color: #0099cc;
+			}
 		</style>
 	</head>
 
 	<body>
-		<header class="mui-bar mui-bar-nav" style="display: none;">
+		<header class="mui-bar mui-bar-nav own-main-background-color" style="display: none;">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 id="title" class="mui-title">首页</h1>
 		</header>
@@ -53,6 +56,9 @@
 			
 			 //创建子页面，首个选项卡页面显示，其它均隐藏；
 			mui.plusReady(function() {
+			 	//改变statusbar
+			plus.navigator.setStatusBarBackground('#0099cc');
+			
 				var self = plus.webview.currentWebview();
 				for (var i = 0; i < 4; i++) {
 					var temp = {};
@@ -62,6 +68,7 @@
 					}else{
 						temp[subpages[i]] = "true";
 						mui.extend(aniShow,temp);
+						//mui.fire(subpages[i],'show',null);
 					}
 					self.append(sub);
 				}
@@ -80,10 +87,12 @@
 				//显示目标选项卡
 				if(mui.os.ios||aniShow[targetTab]){
 					plus.webview.show(targetTab);
+					//mui.fire(aniShow,'show',null);
 				}else{
 					var temp = {};
 					temp[targetTab] = "true";
 					mui.extend(aniShow,temp);
+					//mui.fire(aniShow,'show',null);
 					plus.webview.show(targetTab,"fade-in",300);
 				}
 				//隐藏当前;

@@ -38,7 +38,7 @@
 		<script>
 			mui.init();
 			 	mui.plusReady(function() {
-			 				var self = plus.webview.currentWebview();
+			 	var self = plus.webview.currentWebview();
 				var  cid = self.cid;
 			 		mui.ajax({
 					type: "get",
@@ -57,19 +57,21 @@
 				var	customer = data.detail.customer;
 					kh.innerHTML =customer.Customer+ '('+customer.tel+')';
 					dz.innerHTML =customer.address;
-//						topic = data.customer.topic;
-//						$("#topic-author").html(topic.nickname);
-//						$("#topic-intime").html(moment(formatDate(topic.in_time), 'YYYY-MM-DD HH:mm:ss').fromNow());
-//						$("#topic-title").html(topic.title);
-//						$("#reply_count").html(data.detail.replies.length);
-//						$("#topic_content").append(topic.t_content);
-//						$("#topic-view").append(topic.t_view + '次浏览');
-//						$("#topic-sectionname").append(topic.sectionName);
 						var reply_list = $("#reply_list");
 						reply_list.html("");
 						$.each(data.detail.follow, function(index, _data) {
+							var prb=""; var pre="";
+							
+							{
+							prb=	'<div class="mui-slider-right mui-disabled"> ' +
+					 	'<button id=de'+_data.id+' class="mui-btn mui-btn-red">删除</button> ' +
+
+							'</div> ' +
+							' 	<div class="mui-slider-handle">';
+							pre='</div>' ;
+							}
 							var html = '<li class="mui-table-view-cell">' +
-							 
+							 prb+
 								    '<div class="media-body">' +
 								        '<div class="media-heading">' +
 								            '<p class="small-fade">' +
@@ -82,7 +84,7 @@
 								            _data.Follow +
 								        '</div>' +
 								    '</div>' +
-							 
+							 pre
 							'</li>';
 							reply_list.append(html);
 						});
@@ -96,7 +98,40 @@
 						console.log(type);
 						}
 				});
+				doexec();
 			 	});
+			 	
+			 	function doexec()
+			 	{
+			 			mui('#reply_list').on('tap', '.mui-btn', function(event) {
+			 				var elem = this;
+							var strid=elem.getAttribute('id');
+			 				var _strurl="";var _id="";
+							if(strid.substr(0, 2)=='de')//置顶
+						{	
+							_strurl = _url+ '/webserver/WebService1.asmx/DeleteFollow';
+						   _id=strid.substring(2,strid.length);
+						}
+						 mui.ajax({
+						type: "post",
+						url: _strurl,
+						data: {
+								id:_id
+						},
+						async: true,
+						dataType: "json",
+						success: function(data) {
+						var list = plus.webview.currentWebview();
+						list.reload();
+						},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						console.log(type);
+						}
+						});
+			 			});
+			 	}
+			 	
 		</script>
 		
 	</body>

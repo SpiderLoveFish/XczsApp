@@ -43,8 +43,8 @@
 			<hr />
 					<div class="form-group">
 					<input type="hidden" id="tid" value="1">
- 	                <input type="text" id="showSectionPicker" disabled="disabled" value="电话" class="form-control">
-			
+ 	              			<button id='showSectionPicker' class="mui-btn mui-btn-block" type='button'>电话</button>
+ 
 			</div>
 			<div class="mui-input-row" style="margin: 10px 5px;">
 				<textarea id="textarea" rows="8" placeholder="填写跟进内容"></textarea>
@@ -133,7 +133,7 @@
 				sectionPicker.show(function(items) {
 					console.log(items[0].value);
 					document.getElementById("tid").value = items[0].value;
-					showSectionPickerButton.value = items[0].text;
+						showSectionPickerButton.innerHTML=items[0].text;
 				});
 			}, false);
 		 

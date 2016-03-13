@@ -47,7 +47,7 @@
 								</a>
 							</li>
 							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-								<a href="test.html">
+								<a href="../map/signin.html">
 									<span class="mui-icon mui-icon-map "></span>
 									<div class="mui-media-body">签到</div>
 								</a>
@@ -100,6 +100,8 @@
 			var parentWebView;
 				var contentWebView;
 		mui.plusReady(function(){
+			 	//改变statusbar
+			plus.navigator.setStatusBarBackground('#0099cc');
 			parentWebView = plus.webview.currentWebview().parent();
 				aniShow = getaniShow();
 			mui('.mui-table-view').on('tap','a',function(){

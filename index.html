@@ -8,16 +8,18 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link rel="stylesheet" href="css/mui.min.css">
 		<style type="text/css">
-			.mui-bar{
-				background-color: rgba(0,153,204,.9);
-			}
+		 
 			.mui-icon{
 				color: #FFFFFF;
 			}
+			.own-main-background-color {
+		background-color: #0099cc;
+			}
+
 		</style>	
 	</head>
 	<body>
-		<header class="mui-bar mui-bar-nav">
+		<header class="mui-bar mui-bar-nav own-main-background-color">
 			<a class="mui-icon mui-icon-bars mui-pull-left"></a>
 			<a id="info" class="mui-icon mui-icon-help mui-pull-right"></a>
 			<h1 class="mui-title" style="color: #FFFFFF;">心成装饰</h1>
@@ -30,32 +32,11 @@
 			var showMenu = false;
 			
 			mui.plusReady(function() {
-					plus.storage.setItem("_user_token", "0AA223C635F21CA892E33AC7139FB3CD");
-				//读取本地存储，检查是否为首次启动
-				var showGuide = plus.storage.getItem("lauchFlag");
-				if(showGuide){
-					//有值，说明已经显示过了，无需显示；
-					//关闭splash页面；
-					plus.navigator.closeSplashscreen();
-					plus.navigator.setFullscreen(false);
-				}else{
-					//显示启动导航
-					mui.openWindow({
-						id:'guide',
-						url:'guide.html',
-						show:{
-							aniShow:'none'
-						},
-						waiting:{
-							autoShow:false
-						}
-					});
-				}
+				 	//改变statusbar
+			plus.navigator.setStatusBarBackground('#0099cc');
 			});
 			mui.init({
 				swipeBack: false,
-			//	plus.navigator.setStatusBarBackground('#f7f7f7');
-				statusBarBackground: '#f7f7f7',
 				gestureConfig: {
 					doubletap: true
 				},
@@ -63,17 +44,14 @@
 					id: 'main',
 					url: 'main.html',
 					styles: {
-						top: '45px',
+						top: '40px',
 						bottom: 0,
 						bounce: 'vertical'
 					}
 				}]
 			});
-			mui.plusReady(function() {
-			 	//改变statusbar
-			plus.navigator.setStatusBarBackground('#f7f7f7');
-			});
 		 
+		
 			 //点击左上角侧滑图标，
 			document.querySelector('.mui-icon-bars').addEventListener('tap', function(e) {
 				 

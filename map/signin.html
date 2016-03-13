@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+		<title></title>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a id="back" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 id="title" class="mui-title">打卡签到</h1>
+		</header>
+		<div class="mui-content">
+			<div class="title" align="center">
+				地理位置
+			</div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;">
+
+						<div class="mui-media-body">
+							<span class="mui-icon mui-icon-location mui-pull-left"></span>
+							<p id="output" onclick="showMaps();" class='mui-ellipsis-2'></p>
+						</div>
+
+					</a>
+				</li>
+
+			</ul>
+			<div class="title " style="margin: 50px 15px;">
+
+			</div>
+
+			<div id='beginqd' style=" width:100px; height:100px; background-color:#8A2BE2; border-radius:50px;margin: 0px 25px;">
+				<span id='beginqdtxt'  class='mui-ellipsis-2' style="height:100px; line-height:100px; display:block; color:#3CB371; text-align:center">签到</span>
+				<input type="hidden" id="txtlc" />
+			</div>
+		</div>
+		<!--808080-->
+		<div id='endqd' style=" width:100px; height:100px; background-color:#2E8B57; border-radius:50px; margin: -100px 200px;">
+			<span id='endqdtxt' style="height:100px; line-height:100px; display:block; color:#3CB371; text-align:center">签退</span>
+		</div>
+
+		<div class="mui-card" style="margin: 150px 25px 25px 25px;">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' align="center">我的打卡记录</p>
+							<ul class="mui-table-view" id="singin_list" style="padding: 8px; margin-bottom: 37px;">
+							</ul>
+						</div>
+					</a>
+				</li>
+		</div>
+
+		</div>
+		<div id="allmap"></div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/h5common.js"></script>
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/bbscommon.js"></script>
+	<script type="text/javascript" src="../js/app.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=yoW4wFsa6y9Me8ksVC6wFA7D"></script>
+	<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
+	<script src="http://cache.amap.com/lbs/static/es5.min.js"></script>
+	<script src="http://webapi.amap.com/maps?v=1.3&key=b44444fb85c9fc6a80a4aea07c86c06c"></script>
+
+	<script>
+		mui.init({
+			swipeBack: false
+		});
+
+		function showMaps() {
+			var ws = plus.webview.currentWebview();
+//			var wm = plus.webview.getWebviewById(plus.runtime.appid);
+//			wm && wm.evalJS("preateClear()");
+			clicked('maps_map.html', false, true);
+		}
+		var bqd = document.getElementById("beginqd");
+		var eqd = document.getElementById("endqd");
+		mui.plusReady(function() {
+			var output = document.getElementById("output");
+			if (duibi(plus.storage.getItem('beginsingin'),getday(new Date()))) //存储时间小于现在时间，清了重新来
+			{
+				plus.storage.setItem('beginsingin', '2010-10-10');
+			} else {
+				bqd.style.backgroundColor = "#808080";
+				document.getElementById("beginqdtxt").innerHTML = '已签到';
+			}
+			if (duibi(plus.storage.getItem('endsingin'),getNextDay(new Date()))) {
+			
+			plus.storage.setItem('endsingin', '2010-10-10');
+			}
+			else {
+				console.log(plus.storage.getItem('endsingin'))
+				console.log(getNextDay(new Date()) )
+				eqd.style.backgroundColor = "#808080";
+				document.getElementById("endqdtxt").innerHTML = '已签退';
+			}
+			getlistsingin();
+			onPlusReady();
+		});
+
+		//var signin = getsingin();
+		var btnArray = ['否', '是'];
+		var adress = '';
+		var adres = '';
+		//签到
+		bqd.addEventListener('tap', function(event) {
+			if (document.getElementById("beginqdtxt").innerHTML == '已签到')
+				return;
+			if (adress != '') {
+				adres = '确认地址：' + adress + ' 时间:' + getNowFormatDate();
+			} else {
+				adres = '无法定位地址，请打开GPS。';
+			}
+			mui.confirm(adres, '上班签到', btnArray, function(e) {
+				if (e.index == 1) {
+					singin(adress, txtlc.value, 'b');
+					bqd.style.backgroundColor = "#808080";
+					document.getElementById("beginqdtxt").innerHTML = '已签到';
+				}
+			})
+		});
+		//签退
+		eqd.addEventListener('tap', function(event) {
+			if (document.getElementById("endqdtxt").innerHTML == '已签退')
+				return;
+			if (adress != '') {
+				adres = '确认地址：' + adress + ' 时间:' + getNowFormatDate();
+			} else {
+				adres = '无法定位地址，请打开GPS。';
+			}
+			mui.confirm(adres, '下班签到', btnArray, function(e) {
+				if (e.index == 1) {
+					singin(adress, txtlc.value, 'e');
+					eqd.style.backgroundColor = "#808080";
+					document.getElementById("endqdtxt").innerHTML = '已签退';
+				}
+			})
+		});
+
+		function onPlusReady() {
+			getPosition(function(p) {
+				output.innerText = p + '1';
+			});
+			//	 getbaidupos(function ( p ) {
+			//	  
+			//		output2.innerText= p+'2' ; 
+			//	});
+			//	 getgdpos(function ( p ) {
+			//	  
+			//		output3.innerText= p+'2' ; 
+			//	});
+		}
+
+		function singin(lc, mapp, style) {
+			var state = getState();
+			console.log(state.userid)
+			mui.ajax({
+				type: "get",
+				url: _url + '/webserver/WebService1.asmx/InsertHR_SignIn',
+				data: {
+					'id': state.userid,
+					'lc': lc,
+					'mapp': mapp
+				},
+				async: true,
+				dataType: "json",
+				success: function(data) {
+					getlistsingin();
+					if (style == 'b') //上班
+						plus.storage.setItem('beginsingin', getday(new	Date()));
+					if (style == 'e') //下班
+						plus.storage.setItem('endsingin', getday(new	Date()));
+				},
+				error: function(xhr, type, errorThrown) {
+					//异常处理；
+					plus.nativeUI.toast('网络异常!');
+				}
+			})
+		}
+
+		function getlistsingin() {
+			var state = getState();
+			mui.ajax({
+				type: "get",
+				url: _url + '/webserver/WebService1.asmx/GetHR_SignList',
+				data: {
+					'id': state.userid,
+					'topindex': 10
+				},
+				async: true,
+				dataType: "json",
+				success: function(data) {
+					var reply_list = $("#singin_list");
+					reply_list.html("");
+					$.each(data.detail, function(index, _data) {
+						var html = '<li class="mui-table-view-cell">' +
+							' <div class="mui-media-body">' +
+							'<span>' + (formatDate(_data.DoTime)) + '</span>' +
+							'<span  class="mui-pull-left mui-ellipsis-2">' + _data.DoPosition + '</span>' +
+							' </div>' +
+							'</li>';
+						reply_list.append(html);
+					});
+				},
+				error: function(xhr, type, errorThrown) {
+					//异常处理；
+					plus.nativeUI.closeWaiting();
+					plus.nativeUI.toast('网络异常!');
+				}
+			})
+		}
+
+		function getgdpos(callback) {
+			var map, geolocation;
+			//加载地图，调用浏览器定位服务
+			map = new AMap.Map('allmap', {
+				resizeEnable: true
+			});
+			map.plugin('AMap.Geolocation', function() {
+				geolocation = new AMap.Geolocation({
+					enableHighAccuracy: true, //是否使用高精度定位，默认:true
+					timeout: 10000, //超过10秒后停止定位，默认：无穷大
+					buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+					zoomToAccuracy: true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+					buttonPosition: 'RB'
+				});
+				map.addControl(geolocation);
+				geolocation.getCurrentPosition();
+				AMap.event.addListener(geolocation, 'complete', onComplete); //返回定位信息
+				AMap.event.addListener(geolocation, 'error', onError); //返回定位出错信息
+			});
+			//解析定位结果
+			function onComplete(data) {
+				getadress(data.position.getLat(), data.position.getLng(), function(p) {
+					callback(p);
+				});
+				//    getadress(data.position.getLng(),data.position.getLat(),function ( p ) {
+				//			 output3.innerHTML=p;
+				//			  }
+			}
+			//解析定位错误信息
+			function onError(data) {
+				output.innerHTML = '定位失败';
+			}
+		}
+
+		function getadress(lat, tude, callback) {
+			var req = 'http://api.map.baidu.com/geocoder/v2/';
+			var parms = {
+				ak: 'yoW4wFsa6y9Me8ksVC6wFA7D',
+				callback: 'renderReverse',
+				output: 'json',
+				location: lat + ',' + tude
+					//,pois:1（周边poi数组） //不建议要，周边数据太杂，不需要
+			};
+			mui.ajax(req, {
+				data: parms,
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；
+				success: function(data) {
+					//console.log(JSON.stringify(data));
+					if (data.status == 0) {
+						var lo = data.result.formatted_address + data.result.sematic_description;
+						adress = data.result.formatted_address + data.result.sematic_description;
+						callback(lo);
+					} else {
+						callback(false);
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					callback(false);
+				}
+			});
+		}
+		//百度取法
+		function getbaidupos(callback) {
+			try {
+				// 百度地图API功能
+				var map = new BMap.Map("allmap");
+				var point = new BMap.Point(116.331398, 39.897445);
+				map.centerAndZoom(point, 12);
+				var geolocation = new BMap.Geolocation();
+				geolocation.getCurrentPosition(function(r) {
+					if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+						getadress(r.latitude, r.longitude, function(p) {
+							callback(p);
+						});
+					} else {
+						//	alert('failed'+this.getStatus());
+						console.log("获取定位位置信息失败：" + this.getStatus());
+						callback(false);
+					}
+				}, {
+					enableHighAccuracy: true
+				})
+			} catch (e) {
+				callback(false);
+				console.error(e.message);
+			}
+		}
+		//HTML5取发
+		function getPosition(callback) {
+			try {
+				//var geolocation = new BMap.Geolocation();
+				plus.geolocation.getCurrentPosition(function(position) {
+					var codns = position.coords; //获取地理坐标信息；
+					getadress(codns.latitude, codns.longitude, function(p) {
+						//txtlc.value=codns.latitude+','+codns.longitudel
+						callback(p);
+					});
+				}, function(e) {
+					console.log("获取定位位置信息失败：" + e.message);
+					callback(false);
+				}, {
+					provider: 'baidu'
+				});
+			} catch (e) {
+				callback(false);
+				console.error(e.message);
+			}
+		}
+	</script>
+
+</html>

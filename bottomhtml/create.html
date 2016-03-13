@@ -26,7 +26,8 @@
 		<div class="mui-content" style="margin: 10px;">
 			<div class="form-group">
 					<input type="hidden" id="sid" value="4">
-					<input type="text" id="showSectionPicker" disabled="disabled" value="灌水" class="form-control">
+						<button id='showSectionPicker' class="mui-btn mui-btn-block" type='button'>灌水</button>
+ 
 			
 			</div>
 			<div class="form-group">
@@ -49,6 +50,7 @@
 				<textarea placeholder="内容" rows="5" id="content" name="content" style="height: 400px;"></textarea>
 			</div>-->
 		</div>
+			</body>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/jquery.min.js"></script>
 		<script src="../js/mui.listpicker.js"></script>
@@ -61,22 +63,22 @@
 			var pickerData = [];
 			mui.plusReady(function() {
 				getSection();
-//				var editor = new wangEditor("content");
-//      			// 自定义菜单
-//		        editor.config.menus = [
-//		            'bold',
-//		            'underline',
-//		            'italic',
-//		            'forecolor',
-//		            'bgcolor',
-//		            'quote',
-//		            'fontsize',
-//		            'head',
-//		            'unorderlist',
-//		            'img'
-//		        ];
-//		        editor.config.uploadImgUrl = _url + '/upload';
-//		        editor.create();
+				var editor = new wangEditor("content");
+        			// 自定义菜单
+		        editor.config.menus = [
+		            'bold',
+		            'underline',
+		            'italic',
+		            'forecolor',
+		            'bgcolor',
+		            'quote',
+		            'fontsize',
+		            'head',
+		            'unorderlist',
+		            'img'
+		        ];
+		        editor.config.uploadImgUrl = _url + '/upload';
+		        editor.create();
 			});
 			function getSection() {
 		
@@ -108,7 +110,7 @@
 				sectionPicker.show(function(items) {
 					console.log(items[0].value);
 					document.getElementById("sid").value = items[0].value;
-					showSectionPickerButton.value = items[0].text;
+					showSectionPickerButton.innerHTML=items[0].text;
 				});
 			}, false);
 		
@@ -151,6 +153,6 @@
 				}
 			}
 		</script>
-	</body>
+
 
 </html>

@@ -53,7 +53,7 @@
 			var showMenu = false;
 			mui.init({
 				swipeBack: true,
-				statusBarBackground: '#f7f7f7',
+				statusBarBackground: '#0099cc',
 				gestureConfig: {
 					doubletap: true
 				},
@@ -72,10 +72,13 @@
 			});
 		  //根据id向服务器请求新闻详情
 			mui.plusReady(function() {
+					//改变statusbar
+			plus.navigator.setStatusBarBackground('#0099cc');
 				if (mui.os.android) {
 					plus.screen.lockOrientation("portrait-primary");
 				}
-				plus.storage.setItem(_user_token, '0AA223C635F21CA892E33AC7139FB3CD');
+				if(isLogin())
+				
 				plus.storage.setItem(_tab_, 'all');
 				plus.storage.setItem(reply_weiba_active, 'true');
 				main = plus.webview.currentWebview();

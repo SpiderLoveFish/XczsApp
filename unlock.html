@@ -36,7 +36,7 @@
 		</div>
 		<script src="js/mui.min.js"></script>
 		<script src="js/mui.locker.js"></script>
-		<script src="basejs/app.js"></script>
+		<script src="js/app.js"></script>
 
 		<script>
 			(function($, doc) {
@@ -60,16 +60,16 @@
 							});
 						}, 0);
 					};
-					var settings = app.getSettings();
+					var settings =getSettings();
 					var forgetButton = doc.getElementById("forget");
 					var locker = doc.querySelector('.mui-locker');
 					var clearStateAndToLogin = function() {
 						settings.gestures = '';
 						settings.autoLogin = false;
-						app.setSettings(settings);
-						var state = app.getState();
+						setSettings(settings);
+						var state = getState();
 						state.token = '';
-						app.setState(state);
+						setState(state);
 						$.openWindow({
 							url: 'login.html',
 							id: 'login',

@@ -1,46 +1,48 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>E3不是父子模版，考虑其为模态视图</title>
-    <link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
-    <link rel="stylesheet" type="text/css" href="css/own.css"/>
-    
-    <style type="text/css">
-    		/*下面两项是重置muicss的输入框label和input之间的宽比率*/
-    		.mui-input-row label {
-    			width: 20%;
-    		}
-    		.mui-input-row label~input {
-    			width: 80%;
-    		}
-    		
-    </style>
-</head>
-<body>
-	
-	<header class="mui-bar mui-bar-nav">
-		<h1 class="mui-title">登录</h1>
-	</header>
-	
-	<div class="mui-content">
-		<div style="margin-top: 30px; text-align: center;">
-			<span class="mui-icon mui-icon-person" style="font-size: 4em; border: 2px solid gray; border-radius: 50%; color: gray;"></span>
-		</div>
-		<div class="mui-card" style="margin-top: 20px;">
-			<form class="mui-input-group">
-				<div class="mui-input-row">
-					<label><span class="mui-icon mui-icon-person"></span></label>
-					<input type="text" class="mui-input-clear" value="" placeholder="请输入账号" />
-				</div>
-				<div class="mui-input-row">
-					<label><span class="mui-icon mui-icon-locked"></span></label>
-					<input type="password" class="mui-input-clear" value="" placeholder="请输入密码" />
-				</div>
-			</form>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>E3不是父子模版，考虑其为模态视图</title>
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/own.css" />
+
+		<style type="text/css">
+			/*下面两项是重置muicss的输入框label和input之间的宽比率*/
 			
-		</div>
+			.mui-input-row label {
+				width: 20%;
+			}
+			
+			.mui-input-row label~input {
+				width: 80%;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">登录</h1>
+		</header>
+
+		<div class="mui-content">
+			<div style="margin-top: 30px; text-align: center;">
+				<span class="mui-icon mui-icon-person" style="font-size: 4em; border: 2px solid gray; border-radius: 50%; color: gray;"></span>
+			</div>
+			<div class="mui-card" style="margin-top: 20px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label><span class="mui-icon mui-icon-person"></span></label>
+						<input type="text" class="mui-input-clear" value="" placeholder="请输入账号" />
+					</div>
+					<div class="mui-input-row">
+						<label><span class="mui-icon mui-icon-locked"></span></label>
+						<input type="password" class="mui-input-clear" value="" placeholder="请输入密码" />
+					</div>
+				</form>
+
+			</div>
 			<form class="mui-card">
 				<ul class="mui-table-view mui-table-view-chevron">
 					<li class="mui-table-view-cell">
@@ -51,112 +53,180 @@
 					</li>
 				</ul>
 			</form>
-		<div class="mui-button-row" style="margin: 10px 15px;">
-			<button id="loginBtn" type="button" class="mui-btn mui-btn-green own-btn-green mui-btn-block " style="padding: 5px 0px;">登录</button>
-		</div>
-		<div class="mui-button-row" style="padding-top: 0px;">
-	 		<button id="repsd" type="button" class="mui-btn mui-btn-link " style="padding-top: 0px;  color: #FF6A6A;">忘记密码</button>
-		</div>
-		
-		
-	</div>
-	
-	<script src="js/mui.min.js" charset="UTF-8"></script>
-	<script src="js/own.js" charset="UTF-8"></script>
+			<div class="mui-button-row" style="margin: 10px 15px;">
+				<button id="loginBtn" type="button" class="mui-btn mui-btn-green own-btn-green mui-btn-block " style="padding: 5px 0px;">登录</button>
+			</div>
+			<div class="mui-button-row" style="padding-top: 0px;">
+				<button id="repsd" type="button" class="mui-btn mui-btn-link " style="padding-top: 0px;  color: #FF6A6A;">忘记密码</button>
+			</div>
 
-	<script type="text/javascript" charset="UTF-8">
-		mui.init({
-			swipeBack:true
-		});
-		
-		var account;
-		var psd;
-		var login;
-		var repsd;
-		
-		var loginWebview;
-		mui.plusReady(function(){
-			
-			account = document.querySelector('input[type="text"]');
-			psd = document.querySelector('input[type="password"]');
-			login = document.getElementById('loginBtn');
-			repsd = document.getElementById('repsd');
-			loginWebview = plus.webview.currentWebview();
-			
-			//检测本地的登录过的账号。
-			if (localStorage.getItem('account')) {
-				account.value = localStorage.getItem('account');
-			}
-			
-			//登陆的点击事件
-			login.addEventListener('tap',function(){
-				var toastMSG;
-				//账号密码检测不能为空
-				if (account.value.length <= 0) {
-					toastMSG = '请输入账号';
-					mui.toast(toastMSG);
-					return;
-				}
-				if (psd.value.length <= 0) {
-					toastMSG = '密码不能为空';
-					mui.toast(toastMSG);
-					return;
-				}
-				//登陆联网处理todo之后将页面close
-				ajax_login({
-					pwd:psd.value,
-					user_name:account.value
-				});
+		</div>
+
+		<script src="js/mui.min.js" charset="UTF-8"></script>
+		<script src="js/own.js" charset="UTF-8"></script>
+		<script src="js/bbscommon.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/app.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init({
+				swipeBack: true
+			});
+			var account;
+			var psd;
+			var login;
+			var repsd;
+			var autoLoginButton;
+			var loginWebview;
+			mui.plusReady(function() {
 				
+				//读取本地存储，检查是否为首次启动
+				var showGuide = plus.storage.getItem("lauchFlag");
+				if (showGuide) {
+					//有值，说明已经显示过了，无需显示；
+					//关闭splash页面；
+					plus.navigator.closeSplashscreen();
+					plus.navigator.setFullscreen(false);
+				} else {
+					//显示启动导航
+					mui.openWindow({
+						id: 'guide',
+						url: 'guide.html',
+						show: {
+							aniShow: 'none'
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+				}
+				plus.screen.lockOrientation("portrait-primary");
+				var settings = getSettings();
+				var state = getState();
+				
+				account = document.querySelector('input[type="text"]');
+				psd = document.querySelector('input[type="password"]');
+				login = document.getElementById('loginBtn');
+				repsd = document.getElementById('repsd');
+				autoLoginButton = document.getElementById("autoLogin");
+				loginWebview = plus.webview.currentWebview();
+				//检测本地的登录过的账号。
+				if (localStorage.getItem('account')) {
+					account.value = localStorage.getItem('account');
+				}
+				var mainPage = mui.preload({
+					"id": 'main',
+					"url": 'index.html'
+				});
+				var toMain = function() {
+					mui.fire(mainPage, 'show', null);
+					setTimeout(function() {
+						mui.openWindow({
+							id: 'main',
+							show: {
+								aniShow: 'pop-in'
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+					}, 200);
+				};
+				
+				//检查 "登录状态/锁屏状态" 开始
+				if (settings.autoLogin && state.token && settings.gestures) {
+					mui.openWindow({
+						url: 'unlock.html',
+						id: 'unlock',
+						show: {
+							aniShow: 'pop-in'
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+				} else if (settings.autoLogin && state.token) {
+					toMain();
+				}
+				//登陆的点击事件
+				login.addEventListener('tap', function() {
+			
+						//账号密码检测不能为空
+					if (account.value.length <= 0) {
+						mui.toast('请输入账号');
+						return;
+					}
+					if (psd.value.length <= 0) {
+						mui.toast('密码不能为空');
+						return;
+					}
+					plus.nativeUI.showWaiting("登录等待中...");
+					console.log(_url)
+					mui.ajax({
+						type: "get",
+						url: _url + '/webserver/WebService1.asmx/GetLogin',
+						data: {
+							'username': account.value,
+							'password': psd.value,
+							'ip': plus.os.version + '|' + plus.os.name
+						},
+						async: true,
+						dataType: "json",
+						success: function(data) {
+							if (data.code != '200') {
+								plus.nativeUI.toast(data.description);
+								return;
+							}
+							var authed = false;
+					
+							$.each(data.detail, function(index, _data) {
+								if (_data.uid == account.value) {
+									authed = true;
+								}
+								if (authed) {
+									createState(_data);
+									plus.nativeUI.closeWaiting();
+									toMain();
+									//特意每次登录刷新下setting页面
+										parent = plus.webview.getWebviewById("bottomhtml/setting.html");
+									mui.fire(parent, "show");
+								} else {
+									plus.nativeUI.toast('用户名或密码错误!');
+									plus.nativeUI.closeWaiting();
+									return;
+								}
+							});
+						},
+						error: function(xhr, type, errorThrown) {
+							//异常处理；
+							plus.nativeUI.closeWaiting();
+							plus.nativeUI.toast('网络异常!');
+						}
+					})
+				});
 				//添加事件接收close事件，并且要判断是否已经登录成功，然后页面close，因为login页面是预先加载的页面
-				//在这里向需要的页面发送消息事件通知已经登录做响应的处理
-				loginWebview.addEventListener('hide',function(){
-					
-	
-					var cartwebview = plus.webview.getWebviewById('baritemHtml/cart.html');
-					var minewebview = plus.webview.getWebviewById('baritemHtml/mine.html');
-					var xinyuandanwebview = plus.webview.getWebviewById('baritemHtml/xinyuandan.html');
-					
-					mui.fire(cartwebview,'loginSuccess',{});
-					mui.fire(minewebview,'loginSuccess',{});
-					mui.fire(xinyuandanwebview,'loginSuccess',{});
-					
-					loginWebview.close();
-				},false);
-				
-			},false);
-			
-	 	//注册按钮的点击事件
-			repsd.addEventListener('tap',function(){
-				var aniShow = getaniShow();
-				var HBuilder = plus.webview.getWebviewById('HBuilder');
-				console.log(HBuilder.getURL());
-				mui.fire(HBuilder,'newWebView',{
-					id:'Mine/remenberpsd-needtem.html',
-					href:'Mine/remenberpsd-needtem.html',
-					aniShow:aniShow,
-					title:'忘记密码'
-				});
-				
-			},false);
-		});
-		
-		function loginSuccess(data){
-			//将用户信息和account分开存放是有好处的
-			if ('000000' == data.code) {
-				var user = {
-					website_name:data.website_name,
-					website_logo:data.website_logo,
-					website_grade:data.website_grade,
-					website_id:data.website_id
-				}
-				//将两个数据存放起来，第一个是等出之后删除，第二个只要登录之后就会记录保存
-				localStorage.setItem('user',JSON.stringify(user));
-				localStorage.setItem('account',data.account);
-				mui.back();
-				mui.toast('登录成功');
-			}
-		}
-	</script>
-</body>
+				//忘记按钮的点击事件
+				repsd.addEventListener('tap', function() {
+					var aniShow = getaniShow();
+					var HBuilder = plus.webview.getWebviewById('HBuilder');
+					console.log(HBuilder.getURL());
+					mui.fire(HBuilder, 'newWebView', {
+						id: 'sett/changedsd.html',
+						href: 'sett/changedsd.html',
+						aniShow: aniShow,
+						title: '忘记密码'
+					});
+				}, false);
+				autoLoginButton.classList[settings.autoLogin ? 'add' : 'remove']('mui-active')
+				autoLoginButton.addEventListener('toggle', function(event) {
+					setTimeout(function() {
+						var isActive = event.detail.isActive;
+						settings.autoLogin = isActive;
+						setSettings(settings);
+					}, 50);
+				}, false);
+			});
+
+		</script>
+	</body>
+
 </html>

@@ -25,6 +25,7 @@
 					&nbsp;•&nbsp;<span id="topic-intime"></span>
 					&nbsp;•&nbsp;<span id="topic-view"></span>
 					&nbsp;•&nbsp;<span id="topic-sectionname"></span>
+					<input type="hidden" id="lz_token" />
 				</p>
 				<div class="divide" style="margin-bottom: 10px;"></div>
 				<div id="topic_content"></div>
@@ -55,9 +56,50 @@
 			
 			var topic, replies, parent, quote = "";
 			mui.plusReady(function() {
+					//处理
+				mui('#reply_list').on('tap', '.mui-btn', function(event) {
+						var elem = this;
+							var strid=elem.getAttribute('id');
+							var _url="";var _id="";
+							if(strid.substr(0, 2)=='zd')//置顶
+						{	
+							_url=_baseUrl + "/UpdateTopicTop";
+							_id=strid.substring(2,strid.length);
+						}
+						else if(strid.substr(0, 2)=='jj')//加精
+						{
+							_url=_baseUrl + "/UpdateTopicGood";
+							_id=strid.substring(2,strid.length);}
+						else if(strid.substr(0, 2)=='de')//删除
+						{
+							_url=_baseUrl + "/Updatef_reply_delete";
+							_id=strid.substring(2,strid.length);
+						}
+					 
+						 mui.ajax({
+						type: "post",
+						url: _url,
+						data: {
+							    token:plus.storage.getItem(_user_token),
+								id:_id,
+								status:1
+						},
+						async: true,
+						dataType: "json",
+						success: function(data) {
+						var list = plus.webview.currentWebview();
+						list.reload();
+						},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						console.log(type);
+						}
+						});
+				});
+				
+				
 				parent = plus.webview.currentWebview().opener();
 				var tid = plus.storage.getItem(_topic_id);
-				console.log(tid)
 				if(isLogin()) {
 					document.getElementById("reply_nav").className = "mui-bar mui-bar-footer";
 				}
@@ -75,8 +117,9 @@
           
 						$(".loading").addClass('mui-hidden');
 						$(".mui-content").removeClass('mui-hidden');
+						topic = data.detail.topic;
 						if(isLogin()) {
-							if(data.detail.collect != null) {
+							if(topic.collect != null) {
 								mui.fire(parent, "showStar");
 								mui.fire(parent, "starFilled");
 								mui.fire(parent, "collect");
@@ -85,18 +128,35 @@
 								mui.fire(parent, "notCollect");
 							}
 						}
-						topic = data.detail.topic;
+					
+							
 						$("#topic-author").html(topic.nickname);
 						$("#topic-intime").html(moment(formatDate(topic.in_time), 'YYYY-MM-DD HH:mm:ss').fromNow());
 						$("#topic-title").html(topic.title);
 						$("#reply_count").html(data.detail.replies.length);
 						$("#topic_content").append(topic.t_content);
+						document.getElementById("lz_token").value=topic.author_id;
 						$("#topic-view").append(topic.t_view + '次浏览');
 						$("#topic-sectionname").append(topic.sectionName);
 						var reply_list = $("#reply_list");
 						reply_list.html("");
 						$.each(data.detail.replies, function(index, _data) {
+														//权限控制
+						var prb=""; var pre="";var lslz="";
+						
+							if(_data.token==topic.author_id)
+							{
+							prb=	'<div class="mui-slider-right mui-disabled"> ' +
+					 	'<button id=de'+_data.id+' class="mui-btn mui-btn-red">删除</button> ' +
+
+							'</div> ' +
+							' 	<div class="mui-slider-handle">';
+							pr='</div>' ;
+							lslz= '<span class="span3"> [楼主]</span>'
+							}
+							
 							var html = '<li class="mui-table-view-cell">' +
+										prb +
 								'<div class="media" style="margin:0 -12px;">' +
 								    '<div class="media-left">' +
 							            '<img src="'+_url+_data.avatar+'"  alt="avatar" class="media-object avatar">' +
@@ -106,14 +166,16 @@
 								            '<p class="small-fade">' +
 								                '<a href="'+_baseUrl+'/user/'+_data.author_id+'">'+_data.nickname+'</a>' +
 								                '<span>'+moment(formatDate(_data.in_time), 'YYYY-MM-DD HH:mm:ss').fromNow()+'</span>' +
+								                lslz+
 								                '<span class="pull-right">'+(index+1)+'楼</span>' +
 								            '</p>' +
 								        '</div>' +
 								        '<div class="media-body reply_content">' +
-								            _data.t_content +
+								            myHTMLDeCode(_data.content) +
 								        '</div>' +
 								    '</div>' +
 								'</div>' +
+							pre +
 							'</li>';
 							reply_list.append(html);
 						});
@@ -184,24 +246,38 @@
 									reply_input.val("");
 									reply_list.html("");
 									$.each(data.detail, function(index, _data) {
+											//权限控制
+							var prb=""; var pre="";var lslz="";
+                           	if(_data.token==document.getElementById("lz_token").value)
+							{
+							prb=	'<div class="mui-slider-right mui-disabled"> ' +
+								'<button id='+_data.id+' class="mui-btn mui-btn-red">删除</button> ' +
+							'</div> ' +
+							' 	<div class="mui-slider-handle">';
+							pr='</div>' ;
+								lslz= '<span class="span3"> [楼主]</span>'
+							}
 										var html = '<li class="mui-table-view-cell">' +
+									 prb+
 											'<div class="media" style="margin:0 -12px;">' +
 											    '<div class="media-left">' +
-										            '<img src="'+_data.avatar+'" alt="avatar" class="media-object avatar">' +
+										            '<img src="'+_url+_data.avatar+'" alt="avatar" class="media-object avatar">' +
 											    '</div>' +
 											    '<div class="media-body">' +
 											        '<div class="media-heading">' +
 											            '<p class="small-fade">' +
 											                '<a href="'+_baseUrl+'/user/'+_data.author_id+'">'+_data.nickname+'</a>' +
 											                '<span>'+moment(formatDate(_data.in_time), 'YYYY-MM-DD HH:mm:ss').fromNow()+'</span>' +
-											                '<span class="pull-right">'+(index+1)+'楼</span>' +
+											               lslz+
+											               '<span class="pull-right">'+(index+1)+'楼</span>' +
 											            '</p>' +
 											        '</div>' +
 											        '<div class="media-body reply_content">' +
-											            _data.t_content +
+											            myHTMLDeCode(_data.content) +
 											        '</div>' +
 											    '</div>' +
 											'</div>' +
+											pre+
 										'</li>';
 										reply_list.append(html);
 									});

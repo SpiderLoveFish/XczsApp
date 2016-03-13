@@ -1,30 +1,246 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
-		<meta charset="UTF-8">
-		<title></title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>E3</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/own.css" />
+
+		<style type="text/css">
+			.headImg {
+				padding: 8% 0px 13% 0px;
+				/*background: url(../img/bg.jpeg);*/
+				background-position: center center;
+				background-size: 100% auto;
+			}
+			
+			.footer {
+				text-align: center;
+				margin: 15px 0 0;
+				font-size: 12px;
+				color: #D0D0D0;
+			}
+			
+			.touxiang {
+				text-align: center;
+			}
+			
+			.touxiang div {
+				width: 4em;
+				height: 4em;
+				padding: 0px;
+				border-radius: 50%;
+				border: 2px solid white;
+				color: gray;
+				margin: 0px auto;
+				margin-bottom: 5px;
+			}
+		</style>
 	</head>
+
 	<body>
-	<script type="text/javascript" src="../js/mui.min.js" ></script>
-	<script type="text/javascript" src="../js/jquery.min.js" ></script>
-		<script>
-		mui.plusReady(function({
-			// var strurl="http://mb.xczs.co/webserver/WebService1.asmx/GetCustomer_page'";
-			mui.ajax("http://mb.xczs.co/webserver/WebService1.asmx/GetCustomer_page",{
-						data:{
-						"pageIndex":1,
-						"pageSize":999,
-						"where":''
-						},
-						dataType:'json',//服务器返回json格式数据
-						type:'post',//HTTP请求类型
-						timeout:10000,//超时时间设置为10秒；
-						success:function(data){
-							console.log(data)
-						}
+
+		<div class="mui-content">
+
+			<div class="headImg">
+				<!--<span id="touxiang" class="mui-btn mui-btn-link mui-icon iconfont icon-zhanghao"></span>-->
+
+				<div class="touxiang">
+					<div id='d_user'>
+						<span id="touxiangimg" class="mui-icon mui-icon-person" style="font-size: 3.8em; color: white;"></span>
+						<img id="trueimg" src="" style="width: 100%; height: 100%; border-radius: 50%;" />
+					</div>
+					<span id="touxiangword">请登录</span>
+				</div>
+			</div>
+
+			<ul class="mui-table-view" style="margin-top: 10px;">
+
+				<li class="mui-table-view-cell">
+					<a href="../sett/setlock.html" class="mui-navigate-right">
+						<span class="mui-icon  mui-icon-locked"></span> 设置锁屏图案
+					</a>
+				</li>
+
+				<!--<li class="mui-table-view-cell">
+				<a id="changeaddress" class="mui-navigate-right" href="../my/change-address.html">
+					<span class="mui-icon  iconfont icon-dizhi"></span>
+					修改地址
+				</a>
+			</li>-->
+			</ul>
+			<ul class="mui-table-view" style="margin-top: 20px;">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="../sett/setdata.html">
+						<span class="mui-icon mui-icon-plus"></span> 修改设置
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="../sett/changepsd.html">
+						<span class="mui-icon mui-icon-locked"></span> 修改密码
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view" style="margin-top: 20px;">
+				<li class="mui-table-view-cell"> 					
+					<a   href="mailto:78146754@qq.com">
+						<span class="mui-icon mui-icon-info"></span> 用户反馈
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a id='update' class="mui-navigate-right" href="../sett/updates.html">
+						<span class="mui-icon mui-icon-help"></span>检查更新
+
+					</a>
+				</li>
+			</ul>
+
+			<ul id="logoutBtn" class="mui-table-view" style="margin-top: 20px;margin-bottom: 20px;">
+				<li class="mui-table-view-cell" style="text-align: center;">
+					<span style="color: indianred;">退出登录</span>
+				</li>
+			</ul>
+
+		</div>
+		<div class="footer">
+			&copy; 2016 spider
+			<br> Powered By spider
+		</div>
+		<script src="../js/mui.min.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/jquery.min.js" ></script>
+		<script src="../js/own.js" charset="UTF-8"></script>
+		<script src="../js/bbscommon.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="../js/mui.locker.js"></script>
+		<script type="text/javascript" src="../js/app.js"></script>
+
+		<script type="text/javascript" charset="UTF-8">
+			mui.init({
+				swipeBack: false
 			});
-		}))
+			var aniShow;
+			var parentWebView;
+			var touxiangimg;
+			var logoutBtn;
+			var trueimg;
+			var touxiangword;
+					window.addEventListener('show', function() {
+						console.log(111)
+					var state = getState();
+				document.getElementById('touxiangword').innerText = state.nickname;
+					trueimg.src = _url + state.avatar;
+				}, false);
 		
-							</script>
+			mui.plusReady(function() {
+					//改变statusbar
+			plus.navigator.setStatusBarBackground('#0099cc');
+				parentWebView = plus.webview.currentWebview().parent();
+				aniShow = getaniShow();
+				touxiangimg = document.getElementById('touxiangimg');
+				logoutBtn = document.getElementById('logoutBtn');
+				trueimg = document.getElementById('trueimg');
+				touxiangword = document.getElementById('touxiangword');
+				var state = getState();
+				document.getElementById('touxiangword').innerText = state.nickname;
+					trueimg.src = _url + state.avatar;
+				logoutBtn.style.display = 'block';
+				trueimg.style.display = 'inline';
+				touxiangimg.style.display = 'none';
+				//				trueimg.src = user.website_logo;
+			
+				touxiangword.style.color = 'black';
+				mui('.mui-table-view').on('tap', 'a', function() {
+					var id = this.getAttribute('href');
+					var href = this.href;
+					var title = this.innerText;
+					var isBars = false;
+					var barsIcon = '';
+					mui.fire(parentWebView, 'newWebView', {
+						id: id,
+						href: href,
+						aniShow: aniShow,
+						title: title,
+						isBars: isBars,
+						barsIcon: barsIcon
+					});
+					
+					mui.openWindow({
+						url: href,
+						id: id,
+						show: {
+							aniShow: 'pop-in'
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+				});
+			});
+			
+			document.getElementById('d_user').addEventListener('tap', function() {
+				console.log(111)
+				mui.openWindow({
+						url: '../sett/user.html',
+						id: 'user',
+						show: {
+							aniShow: 'pop-in'
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+			});
+			//退出操作******************
+			document.getElementById('logoutBtn').addEventListener('tap', function() {
+				if (mui.os.ios) {
+					setState({});
+					setSettings({});
+					mui.openWindow({
+						url: '../login.html',
+						id: 'login',
+						show: {
+							aniShow: 'pop-in'
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+					return;
+				}
+				var btnArray = [{
+					title: "注销当前账号"
+				}, {
+					title: "直接关闭应用"
+				}];
+				plus.nativeUI.actionSheet({
+					cancel: "取消",
+					buttons: btnArray
+				}, function(event) {
+					var index = event.index;
+					switch (index) {
+						case 1:
+							setState({});
+							setSettings({});
+							mui.openWindow({
+								url: '../login.html',
+								id: 'login',
+								show: {
+									aniShow: 'pop-in'
+								},
+								waiting: {
+									autoShow: false
+								}
+							});
+							break;
+						case 2:
+							plus.runtime.quit();
+							break;
+					}
+				});
+			}, false);
+		</script>
 	</body>
+
 </html>
