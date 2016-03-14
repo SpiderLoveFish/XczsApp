@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="../css/bbsapp.css">
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			
+	 
+					<input type="search" id='txtsearch' class="mui-input-clear"  style="width: 90%;" placeholder="姓名 \ 小区 \ 楼号 \ 房号  \ 电话">
+				<a href="javascript:reflashlist();" id="reflashlist" class="mui-pull-right">
+				<span class="mui-icon mui-icon-search"></span>
+			</a>	
+			 
+			 
+		 
+				
+		</header>
+		 
+				
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<ul class="mui-table-view" id="cus_detail">
+				</ul>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery.min.js"></script>
+		<script src="http://cdn.bootcss.com/moment.js/2.11.2/moment.min.js"></script>
+		<script src="http://cdn.bootcss.com/moment.js/2.11.2/locale/zh-cn.js"></script>
+		<script src="../js/bbscommon.js"></script>
+		<script type="text/javascript" src="../js/app.js" ></script>
+		<script>
+			var index;
+			  var strurl=_url+"webserver/WebService1.asmx/GetCustomer_page";
+			  var strwhere="";
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			mui.plusReady(function(){
+		 	//获得主页面webview引用；
+				index = plus.webview.currentWebview().opener();
+				if(isLogin()) {
+					mui.fire(index, "showCreateTopic");
+				}
+				mui('#cus_detail').on('tap', '.mui-test', function(event) {
+						var elem = this;
+						var strid=elem.getAttribute('id');
+					topic_detail(strid);
+				});
+				//执行权限命令
+				doexec();
+			});
+			
+			function doexec()
+			{
+					//处理
+				mui('#cus_detail').on('tap', '.mui-btn', function(event) {
+						var elem = this;
+						
+						var strid=elem.getAttribute('id');
+						if(strid.substr(0, 2)=='tl')//电话
+						{	
+							console.log(1)
+							plus.device.dial(strid.substring(2,strid.length));
+						}
+						else if(strid.substr(0, 2)=='xx')//详细
+						{
+							var indexWebview = plus.webview.getWebviewById('kh_gj');
+								mui.fire(indexWebview,'getdetail',{id:strid.substring(2,strid.length)});
+							//打开新闻详情
+							  mui.openWindow({
+							    id:'kh_gj_mx',
+							    url:'kh_gj_mx.html',
+							    extras:{
+							        cid:strid.substring(2,strid.length) 
+							    }
+							  });
+						}
+						else if(strid.substr(0, 2)=='gj')//跟进
+						{
+								var indexWebview = plus.webview.getWebviewById('kh_gj_mx');
+							mui.fire(indexWebview,'getdetail',{id:strid});
+							//打开新闻详情
+							  mui.openWindow({
+							    id:'kh_gj',
+							    url:'kh_gj.html',
+							    extras:{
+							        cid:strid.substring(2,strid.length) 
+							  
+							    }
+							  });
+						} 
+				});
+				
+			}
+			
+			var p = 1;
+			function pulldownRefresh() {
+				mui.ajax({
+					type: "get",
+					url:strurl,
+					data: {
+						"pageIndex":1,
+						"pageSize":20,
+						"where":''
+					},
+					async: true,
+					dataType: "json",
+					success: function(data) {
+						p = 2;
+							if(data.code!=200)
+							{
+							mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						    mui('#pullrefresh').pullRefresh().refresh(true);	
+							}else
+							{
+						   var table = document.body.querySelector('.mui-table-view');
+					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+							$.each(data.detail.list, function(index, _data) {
+						var li = document.createElement('li');
+						  li.setAttribute("data-value", _data.Customer );
+					     li.setAttribute("data-tags", _data.address);
+					      li.setAttribute("data-tel", _data.tel);
+						li.className = 'mui-table-view-cell mui-indexed-list-item';  
+						    html =' <div class="mui-slider-right mui-disabled">'+
+						'<a id=tl'+ _data.tel +' class="mui-btn mui-btn-green mui-icon mui-icon-phone"></a>'+
+					'<a id=gj' + _data.id + ' class="mui-btn mui-btn-purple">跟进</a>' +
+						'<a id=xx' + _data.id + ' class="mui-btn mui-btn-blue" >详细</a>' +
+					'</div>' +
+ 
+						' <div class="mui-table mui-media-body mui-slider-handle">'+
+	
+						  '<h4 class="mui-ellipsis">' + _data.Customer + '</h4>'+
+						      '  <p class="mui-h6 mui-ellipsis"><font color="blueviolet">【'+ _data.CustomerType+'】</font>' + _data.address + '</p>'+
+						  '</div></a>'; 
+					 
+				
+						li.innerHTML =html
+
+						table.appendChild(li);
+						});
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						mui('#pullrefresh').pullRefresh().refresh(true);
+					}
+				}
+				});
+			}
+
+			function pullupRefresh() {
+				mui.ajax({
+					type: "get",
+				url: strurl,
+					data: {
+						pageIndex: p,
+						pageSize: "20",
+						where: ""
+						//plus.storage.getItem(_tab_)
+					},
+					async: true,
+					dataType: "json",
+					success: function(data) {
+						p++; 
+							if(data.code!=200)
+							{
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh((p > 0));	
+							}else
+							{
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((p > data.detail.totalRow)); //参数为true代表没有更多数据了。
+						   var table = document.body.querySelector('.mui-table-view');
+					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+							$.each(data.detail.list, function(index, _data) {
+						var li = document.createElement('li');
+						  li.setAttribute("data-value", _data.Customer );
+					     li.setAttribute("data-tags", _data.address);
+					      li.setAttribute("data-tel", _data.tel);
+						li.className = 'mui-table-view-cell mui-indexed-list-item';  
+						    html =' <div class="mui-slider-right mui-disabled">'+
+						'<a id=tl'+ _data.tel +' class="mui-btn mui-btn-green mui-icon mui-icon-phone"></a>'+
+					'<a id=gj' + _data.id + ' class="mui-btn mui-btn-purple">跟进</a>' +
+						'<a id=xx' + _data.id + ' class="mui-btn mui-btn-blue" >详细</a>' +
+					'</div>' +
+ 
+						' <div class="mui-table mui-media-body mui-slider-handle">'+
+	
+						  '<h4 class="mui-ellipsis">' + _data.Customer + '</h4>'+
+						      '  <p class="mui-h6 mui-ellipsis"><font color="blueviolet">【'+ _data.CustomerType+'】</font>' + _data.address + '</p>'+
+						  '</div></a>'; 
+					 
+				
+						li.innerHTML =html
+
+						table.appendChild(li);
+						});
+						}
+							}
+				});
+			}
+			if (mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 500);
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+			
+			
+			function reflashlist() {
+				 console.log(3434)
+				//strwhere=document.getElementById('txtsearch').value;
+				//条件
+				console.log(strwhere)
+				var list = plus.webview.currentWebview();
+						list.reload();
+			}
+		</script>
+	</body>
+
+</html>

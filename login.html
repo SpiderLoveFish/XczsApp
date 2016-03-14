@@ -173,6 +173,7 @@
 						dataType: "json",
 						success: function(data) {
 							if (data.code != '200') {
+									plus.nativeUI.closeWaiting();
 								plus.nativeUI.toast(data.description);
 								return;
 							}
@@ -195,6 +196,7 @@
 									return;
 								}
 							});
+								
 						},
 						error: function(xhr, type, errorThrown) {
 							//异常处理；

@@ -14,11 +14,11 @@ var countnotreadtime = 300000;
 
 //状态
 function getUrl() {
-	setUrl("http://mb.xczs.co");
+	//setUrl("http://mb.xczs.co");
 	var settingsText = localStorage.getItem('$lurdata') || "{}";
 	if(settingsText=='{}')
 	setUrl("http://mb.xczs.co");
-	console.log(settingsText)
+	//console.log(settingsText)
 		return JSON.parse(settingsText);
 }
 function setUrl(state) {
