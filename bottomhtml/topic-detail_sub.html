@@ -57,9 +57,28 @@
 			var topic, replies, parent, quote = "";
 			mui.plusReady(function() {
 					//处理
+				
+				mui('#reply_list').on('tap', '.small-fade', function(event) {
+					console.log(11)
+					var elem = this;
+							var strid=elem.getAttribute('id');
+							var href = "../sett/user.html";
+							mui.openWindow({
+								url: href,
+								id: strid,
+								show: {
+									aniShow: 'pop-in'
+								},
+								waiting: {
+									autoShow: false
+								}
+							});
+				});
+				
 				mui('#reply_list').on('tap', '.mui-btn', function(event) {
 						var elem = this;
 							var strid=elem.getAttribute('id');
+							
 							var _url="";var _id="";
 							if(strid.substr(0, 2)=='zd')//置顶
 						{	
@@ -119,7 +138,7 @@
 						$(".mui-content").removeClass('mui-hidden');
 						topic = data.detail.topic;
 						if(isLogin()) {
-							if(topic.collect != null) {
+							if(topic.collect == '1') {
 								mui.fire(parent, "showStar");
 								mui.fire(parent, "starFilled");
 								mui.fire(parent, "collect");
@@ -159,12 +178,12 @@
 										prb +
 								'<div class="media" style="margin:0 -12px;">' +
 								    '<div class="media-left">' +
-							            '<img src="'+_url+_data.avatar+'"  alt="avatar" class="media-object avatar">' +
+							            '<img src="'+_data.avatar+'"  alt="avatar" class="media-object avatar">' +
 								    '</div>' +
 								    '<div class="media-body">' +
 								        '<div class="media-heading">' +
 								            '<p class="small-fade">' +
-								                '<a href="'+_baseUrl+'/user/'+_data.author_id+'">'+_data.nickname+'</a>' +
+								                '<a id='+_data.author_id+' >'+_data.nickname+'</a>' +
 								                '<span>'+moment(formatDate(_data.in_time), 'YYYY-MM-DD HH:mm:ss').fromNow()+'</span>' +
 								                lslz+
 								                '<span class="pull-right">'+(index+1)+'楼</span>' +
@@ -191,28 +210,28 @@
 				});
 			});
 			
-			mui('#topic_content').on('tap', 'a', function() {
-				var href=this.getAttribute("href");
-				mui.openWindow({
-					id: 'embed.html',
-					url: 'embed.html',
-					extras: {
-						url: href
-					}
-				})
-			});
+//			mui('#topic_content').on('tap', 'a', function() {
+//				var href=this.getAttribute("href");
+//				mui.openWindow({
+//					id: 'embed.html',
+//					url: 'embed.html',
+//					extras: {
+//						url: href
+//					}
+//				})
+//			});
 			
-			mui('#reply_list').on('tap', 'a', function() {
-				console.log('em')
-				var href=this.getAttribute("href");
-				mui.openWindow({
-					id: 'embed.html',
-					url: 'embed.html',
-					extras: {
-						url: href
-					}
-				})
-			});
+//			mui('#reply_list').on('tap', 'a', function() {
+//				console.log('em')
+//				var href=this.getAttribute("href");
+//				mui.openWindow({
+//					id: 'embed.html',
+//					url: 'embed.html',
+//					extras: {
+//						url: href
+//					}
+//				})
+//			});
 			//敲击顶部导航，内容区回到顶部
 //			document.querySelector('header').addEventListener('doubletap', function() {
 //				plus.webview.getWebviewById('detail').evalJS('mui.scrollTo(0, 100)');
@@ -261,12 +280,12 @@
 									 prb+
 											'<div class="media" style="margin:0 -12px;">' +
 											    '<div class="media-left">' +
-										            '<img src="'+_url+_data.avatar+'" alt="avatar" class="media-object avatar">' +
+										            '<img src="'+_data.avatar+'" alt="avatar" class="media-object avatar">' +
 											    '</div>' +
 											    '<div class="media-body">' +
 											        '<div class="media-heading">' +
 											            '<p class="small-fade">' +
-											                '<a href="'+_baseUrl+'/user/'+_data.author_id+'">'+_data.nickname+'</a>' +
+											                '<a id='+_data.author_id+'  >'+_data.nickname+'</a>' +
 											                '<span>'+moment(formatDate(_data.in_time), 'YYYY-MM-DD HH:mm:ss').fromNow()+'</span>' +
 											               lslz+
 											               '<span class="pull-right">'+(index+1)+'楼</span>' +

@@ -95,7 +95,7 @@
 				bqd.style.backgroundColor = "#808080";
 				document.getElementById("beginqdtxt").innerHTML = '已签到';
 			}
-			if (duibi(plus.storage.getItem('endsingin'),getNextDay(new Date()))) {
+			if (duibi(plus.storage.getItem('endsingin'),getday(new Date()))) {
 			
 			plus.storage.setItem('endsingin', '2010-10-10');
 			}

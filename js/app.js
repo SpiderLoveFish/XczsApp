@@ -30,6 +30,7 @@ function createState(user) {
 	state.avatar = user.avatar;
 	state.token = user.token;
 	state.userid=user.userid;
+	state.grade=user.levelgrade;//级别
 	//特殊的token特殊赋值
 	plus.storage.setItem(_user_token, user.token);
 	setState(state);

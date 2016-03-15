@@ -54,7 +54,7 @@
 				</ul>
 			</form>
 			<div class="mui-button-row" style="margin: 10px 15px;">
-				<button id="loginBtn" type="button" class="mui-btn mui-btn-green own-btn-green mui-btn-block " style="padding: 5px 0px;">登录</button>
+				<button id="loginBtn" type="button" class="mui-btn   own-btn-green mui-btn-block " style="padding: 5px 0px;background: #0099CC;">登录</button>
 			</div>
 			<div class="mui-button-row" style="padding-top: 0px;">
 				<button id="repsd" type="button" class="mui-btn mui-btn-link " style="padding-top: 0px;  color: #FF6A6A;">忘记密码</button>
@@ -167,7 +167,8 @@
 						data: {
 							'username': account.value,
 							'password': psd.value,
-							'ip': plus.os.version + '|' + plus.os.name
+							'ip': plus.os.version + '|' + plus.os.name,
+							'url':_url
 						},
 						async: true,
 						dataType: "json",
@@ -188,7 +189,9 @@
 									plus.nativeUI.closeWaiting();
 									toMain();
 									//特意每次登录刷新下setting页面
-										parent = plus.webview.getWebviewById("bottomhtml/setting.html");
+								var	parent = plus.webview.getWebviewById("bottomhtml/setting.html");
+									mui.fire(parent, "show");
+									parent = plus.webview.getWebviewById("bottomhtml/inform.html");
 									mui.fire(parent, "show");
 								} else {
 									plus.nativeUI.toast('用户名或密码错误!');
@@ -228,6 +231,25 @@
 				}, false);
 			});
 
+			//首页返回键处理
+			//处理逻辑：1秒内，连续两次按返回键，则退出应用；
+			var first = null;
+			mui.back = function() {
+			  {
+					//首次按键，提示‘再按一次退出应用’
+					if (!first) {
+						first = new Date().getTime();
+						mui.toast('再按一次退出应用');
+						setTimeout(function() {
+							first = null;
+						}, 1000);
+					} else {
+						if (new Date().getTime() - first < 1000) {
+							plus.runtime.quit();
+						}
+					}
+				}
+			};
 		</script>
 	</body>
 

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta charset="utf-8">
 		<title>Hello MUI</title>
@@ -16,11 +15,14 @@
 		<link rel="stylesheet" href="../css/bbsapp.css" />
 		<link rel="stylesheet" href="../dist/css/wangEditor-mobile.min.css" />
 		<!--App自定义的css-->
+		
 	</head>
 
 	<body>
  
-			<a href="javascript:save();" class="mui-pull-right" style="line-height: 44px;margin-right: 5px;">提交</a>
+			<a href="javascript:save();" class="mui-pull-right" style=" font-size: 14px;;line-height: 44px;margin-right: 5px;">
+				提交<span class="mui-icon mui-icon-checkmarkempty"></span>
+			</a>
 	 
 		<div class="mui-content" style="margin: 10px;">
 			<div class="form-group">
@@ -32,9 +34,9 @@
 			<div class="form-group">
 				<input type="text" id="title" value="" placeholder="标题" class="form-control">
 			</div>
-			<div class="form-group" style="border:1px solid darkgray;">
+ 			<div class="container" style="border:1px solid darkgray; min-height: 200px;">
 		<textarea placeholder="内容" rows="3" id="content" ></textarea>
-			</div>
+ 		 
 			<!--<div class="mui-input-group">
 				<div class="mui-input-row">
 					<input type="hidden" id="sid" value="8">
@@ -58,25 +60,35 @@
 	<script type="text/javascript" src="../dist/js/lib/zepto.js"></script>
 	<script type="text/javascript" src="../dist/js/lib/zepto.touch.js"></script>
 	<script type="text/javascript" src="../dist/js/wangEditor-mobile.min.js"></script>
+ 	 
 		<script type="text/javascript" charset="utf-8">
-			mui.init();
+		  mui.init();
 			var sectionPicker = new mui.PopPicker();
 			var pickerData = [];
 			mui.plusReady(function() {
 				getSection();
-				var editor = new ___E('content');
-//
-//		// 自定义配置
-//		editor.config.uploadImgUrl = '/upload';
-//
-//		// editor.config.menus = ['bold', 'quote', 'list','img'];
-//
-//		// 初始化
-		editor.init();
-		   var $txt = editor.$txt;
-  		$txt.html('添加内容');
-		    
-			});
+	  var editor = new ___E('content');
+	  editor.config.happy = [
+		    'images/1.gif', 
+		      'images/1.gif'
+		];
+	  editor.config.menus = [
+			    'head',
+			    'bold',
+			    'color',
+			    'quote',
+			    'list',
+			   // 'img',
+			    'happy',
+			    'check'
+			];
+	 // editor.config.testHostname = 'http://mb.xczs.co';
+	 	//editor.config.uploadImgUrl = '/uploadedFiles';
+		
+		      editor.init(); 
+         
+ 		});
+	
 			function getSection() {
 		
 				mui.ajax({
@@ -110,6 +122,7 @@
 					showSectionPickerButton.innerHTML=items[0].text;
 				});
 			}, false);
+  
 		
 			function save() {
 				
@@ -149,6 +162,9 @@
 					});
 				}
 			}
+	 
+	    
+		
 		</script>
 
 

@@ -2,6 +2,7 @@
 
 var _baseUrl = "http://mb.xczs.co/webserver/bbsapi.asmx";
 var _url=getUrl()+'/' ;
+var _mburl="http://mb.xczs.co/";
 //"http://mb.xczs.co/";
 //var _baseUrl = "http://localhost:8080";
 var _user_token = "_user_token";
@@ -11,12 +12,14 @@ var _topic_id = "topic_id";
 var reply_weiba_active = 'reply_weiba_active';
 var reply_weiba = '</br>来自手机客户端 <span style="color:green;">xczs_mobile</span>'
 var countnotreadtime = 300000;
+var _levelgrade='_levelgrade_'//级别等级，99管理员，0最低
 
 //状态
 function getUrl() {
 	//setUrl("http://mb.xczs.co");
 	var settingsText = localStorage.getItem('$lurdata') || "{}";
-	if(settingsText=='{}')
+	console.log(JSON.parse(settingsText))
+	if(settingsText=="{}")
 	setUrl("http://mb.xczs.co");
 	//console.log(settingsText)
 		return JSON.parse(settingsText);

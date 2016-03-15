@@ -70,10 +70,17 @@
 					}
 				}]
 			});
+			window.addEventListener('show', function() {
+			//条件
+			console.log(222)
+				var list = plus.webview.currentWebview();
+						list.reload();
+			 
+			}, false);
 		  //根据id向服务器请求新闻详情
 			mui.plusReady(function() {
-					//改变statusbar
-			plus.navigator.setStatusBarBackground('#0099cc');
+//					//改变statusbar
+//			plus.navigator.setStatusBarBackground('#0099cc');
 				if (mui.os.android) {
 					plus.screen.lockOrientation("portrait-primary");
 				}
@@ -101,12 +108,16 @@
 				});
 			}
 			function reflashlist(tab) {
-				console.log(tab);
+			 
 				var list = plus.webview.getWebviewById('list');
 						plus.storage.setItem(_tab_, tab);
 						list.loadURL("list.html");
 						list.reload();
 			}
+						 //敲击顶部导航，内容区回到顶部
+			document.querySelector('header').addEventListener('doubletap', function() {
+				main.children()[0].evalJS('mui.scrollTo(0, 100)');
+			});
 		</script>
 	</body>
 

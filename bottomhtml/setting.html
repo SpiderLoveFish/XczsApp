@@ -84,12 +84,15 @@
 					</a>
 				</li>
 			</ul>
-			<ul class="mui-table-view" style="margin-top: 20px;">
-				<li class="mui-table-view-cell"> 					
-					<a   href="mailto:78146754@qq.com">
+			<ul class="mui-table-view" style="margin-top: 10px;">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right"  href="../sett/mail.html">
 						<span class="mui-icon mui-icon-info"></span> 用户反馈
 					</a>
 				</li>
+				</ul>
+			<ul class="mui-table-view" style="margin-top: 10px;">
+ 
 				<li class="mui-table-view-cell">
 					<a id='update' class="mui-navigate-right" href="../sett/updates.html">
 						<span class="mui-icon mui-icon-help"></span>检查更新
@@ -97,7 +100,7 @@
 					</a>
 				</li>
 			</ul>
-
+				
 			<ul id="logoutBtn" class="mui-table-view" style="margin-top: 20px;margin-bottom: 20px;">
 				<li class="mui-table-view-cell" style="text-align: center;">
 					<span style="color: indianred;">退出登录</span>
@@ -110,7 +113,7 @@
 			<br> Powered By spider
 		</div>
 		<script src="../js/mui.min.js" charset="UTF-8"></script>
-		<script type="text/javascript" src="../js/jquery.min.js" ></script>
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
 		<script src="../js/own.js" charset="UTF-8"></script>
 		<script src="../js/bbscommon.js" charset="UTF-8"></script>
 		<script type="text/javascript" src="../js/mui.locker.js"></script>
@@ -126,16 +129,16 @@
 			var logoutBtn;
 			var trueimg;
 			var touxiangword;
-					window.addEventListener('show', function() {
-						console.log(111)
-					var state = getState();
+			window.addEventListener('show', function() {
+			 
+				var state = getState();
 				document.getElementById('touxiangword').innerText = state.nickname;
-					trueimg.src = _url + state.avatar;
-				}, false);
-		
+				trueimg.src = state.avatar;
+			 
+			}, false);
 			mui.plusReady(function() {
-					//改变statusbar
-			plus.navigator.setStatusBarBackground('#0099cc');
+				//改变statusbar
+				plus.navigator.setStatusBarBackground('#0099cc');
 				parentWebView = plus.webview.currentWebview().parent();
 				aniShow = getaniShow();
 				touxiangimg = document.getElementById('touxiangimg');
@@ -144,53 +147,73 @@
 				touxiangword = document.getElementById('touxiangword');
 				var state = getState();
 				document.getElementById('touxiangword').innerText = state.nickname;
-					trueimg.src = _url + state.avatar;
+				trueimg.src = state.avatar;
 				logoutBtn.style.display = 'block';
 				trueimg.style.display = 'inline';
 				touxiangimg.style.display = 'none';
 				//				trueimg.src = user.website_logo;
-			
 				touxiangword.style.color = 'black';
 				mui('.mui-table-view').on('tap', 'a', function() {
-					var id = this.getAttribute('href');
-					var href = this.href;
-					var title = this.innerText;
-					var isBars = false;
-					var barsIcon = '';
-					mui.fire(parentWebView, 'newWebView', {
-						id: id,
-						href: href,
-						aniShow: aniShow,
-						title: title,
-						isBars: isBars,
-						barsIcon: barsIcon
-					});
-					
-					mui.openWindow({
-						url: href,
-						id: id,
-						show: {
-							aniShow: 'pop-in'
-						},
-						waiting: {
-							autoShow: false
+						var id = this.getAttribute('href');
+						var href = this.href;
+						var title = this.innerText;
+						var isBars = false;
+						var barsIcon = '';
+						mui.fire(parentWebView, 'newWebView', {
+							id: id,
+							href: href,
+							aniShow: aniShow,
+							title: title,
+							isBars: isBars,
+							barsIcon: barsIcon
+						});
+						var datacode = '';
+					 
+						if (title.trim() == '修改设置') {
+							plus.nativeUI.prompt("输入口令: ", function(e) {
+								if (e.index == 1) return;
+								if (e.value == 'zj') {
+									mui.openWindow({
+										url: href,
+										id: id,
+										show: {
+											aniShow: 'pop-in'
+										},
+										waiting: {
+											autoShow: false
+										}
+									});
+								} else {
+									plus.nativeUI.alert("口令错误，无法操作！");
+								}
+							}, "请输入口令密码", "code", ["OK", "Cancel"]);
+						} else {
+							mui.openWindow({
+								url: href,
+								id: id,
+								show: {
+									aniShow: 'pop-in'
+								},
+								waiting: {
+									autoShow: false
+								}
+							});
 						}
-					});
-				});
+						});
+				
 			});
-			
 			document.getElementById('d_user').addEventListener('tap', function() {
 				console.log(111)
 				mui.openWindow({
-						url: '../sett/user.html',
-						id: 'user',
-						show: {
-							aniShow: 'pop-in'
-						},
-						waiting: {
-							autoShow: false
-						}
-					});
+					url: '../sett/user.html',
+					id: 'user',
+					show: {
+						aniShow: 'pop-in'
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
 			});
 			//退出操作******************
 			document.getElementById('logoutBtn').addEventListener('tap', function() {

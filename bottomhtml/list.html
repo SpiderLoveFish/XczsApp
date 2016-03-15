@@ -27,6 +27,7 @@
 		<script src="http://cdn.bootcss.com/moment.js/2.11.2/moment.min.js"></script>
 		<script src="http://cdn.bootcss.com/moment.js/2.11.2/locale/zh-cn.js"></script>
 		<script src="../js/bbscommon.js"></script>
+		<script type="text/javascript" src="../js/app.js" ></script>
 		<script>
 			var index;
 			mui.init({
@@ -41,6 +42,7 @@
 					}
 				}
 			});
+			 
 			mui.plusReady(function(){
 				 	//改变statusbar
 			plus.navigator.setStatusBarBackground('#0099cc');
@@ -77,7 +79,7 @@
 						}
 						else if(strid.substr(0, 2)=='de')//删除
 						{
-							_url=_baseUrl + "/Updatef_reply_delete";
+							_url=_baseUrl + "/UpdateTopicShow_status";
 							_id=strid.substring(2,strid.length);
 						}
 						console.log(_url)
@@ -102,7 +104,7 @@
 				});
 			});
 			}
-			
+				var state = getState();
 			var p = 1;
 			function pulldownRefresh() {
 			var strwhere=" 1=1";
@@ -136,12 +138,13 @@
 							var span = getTopicTab(_data);
 							//权限控制
 						var prb=""; var pre="";
-							//if(plus.storage.getItem(_user_token)== '0AA223C635F21CA892E33AC7139FB3CD')
+				 
+							 if(state.grade== '99')//管理员
 							{
 							prb=	'<div class="mui-slider-right mui-disabled"> ' +
 						'<button id=zd' + _data.ID + ' class="mui-btn mui-btn-purple">置顶</button>' +
 						'<button id=jj' + _data.ID + ' class="mui-btn mui-btn-blue" >加精</button>' +
-//							'<button id=de'+_data.ID+' class="mui-btn mui-btn-red">删除</button> ' +
+							'<button id=de'+_data.ID+' class="mui-btn mui-btn-red">删除</button> ' +
 
 							'</div> ' +
 							' 	<div class="mui-slider-handle">';
@@ -152,7 +155,7 @@
 							prb+
 							    '<div class="media">' +
 							        '<div class="media-left">' +
-						                '<img src="'+_url+_data.avatar+'" alt="avatar" class="media-object avatar">' +
+						                '<img src="'+_data.avatar+'" alt="avatar" class="media-object avatar">' +
 							        '</div>' +
 							        '<div  class="media-body">' +
 							            '<div class="media-heading item-title">' +
@@ -208,12 +211,12 @@
 						$.each(data.detail.list, function(index, _data) {
 							var span = getTopicTab(_data);										//权限控制
 						var prb=""; var pre="";
-							//if(plus.storage.getItem(_user_token)== '0AA223C635F21CA892E33AC7139FB3CD')
+							 if(state.grade== '99')//管理员
 							{
 							prb=	'<div class="mui-slider-right mui-disabled"> ' +
 						'<button id=zd' + _data.ID + ' class="mui-btn mui-btn-purple">置顶</button>' +
 						'<button id=jj' + _data.ID + ' class="mui-btn mui-btn-blue" >加精</button>' +
-//							'<button id=de'+_data.ID+' class="mui-btn mui-btn-red">删除</button> ' +
+							'<button id=de'+_data.ID+' class="mui-btn mui-btn-red">删除</button> ' +
 
 							'</div> ' +
 							' 	<div class="mui-slider-handle">';
@@ -223,7 +226,7 @@
 							   prb+
 							   '<div class="media">' +
 							        '<div class="media-left">' +
-						                '<img src="'+_url+_data.avatar+'" alt="avatar" class="media-object avatar">' +
+						                '<img src="'+_data.avatar+'" alt="avatar" class="media-object avatar">' +
 							        '</div>' +
 							        '<div  class="media-body">' +
 							            '<div class="media-heading item-title">' +
@@ -254,6 +257,7 @@
 					mui('#pullrefresh').pullRefresh().pullupLoading();
 				});
 			}
+ 
 		</script>
 	</body>
 

@@ -124,7 +124,7 @@
 					data: {
 						"pageIndex":1,
 						"pageSize":20,
-						"where":''
+						"where":plus.storage.getItem("temp_strwhere")
 					},
 					async: true,
 					dataType: "json",
@@ -175,7 +175,7 @@
 					data: {
 						pageIndex: p,
 						pageSize: "20",
-						where: ""
+						where: plus.storage.getItem("temp_strwhere")
 						//plus.storage.getItem(_tab_)
 					},
 					async: true,
@@ -231,9 +231,9 @@
 			
 			
 			function reflashlist() {
-				 console.log(3434)
-				//strwhere=document.getElementById('txtsearch').value;
+				strwhere=document.getElementById('txtsearch').value;
 				//条件
+					plus.storage.setItem("temp_strwhere", strwhere);
 				console.log(strwhere)
 				var list = plus.webview.currentWebview();
 						list.reload();
