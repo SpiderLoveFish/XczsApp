@@ -43,6 +43,14 @@
 				}
 			});
 			 
+			 window.addEventListener('show', function() {
+			//条件
+			console.log(2321)
+				var list = plus.webview.currentWebview();
+						list.reload();
+			 
+			}, false);
+			 
 			mui.plusReady(function(){
 				 	//改变statusbar
 			plus.navigator.setStatusBarBackground('#0099cc');
@@ -59,7 +67,7 @@
 				//执行权限命令
 				doexec();
 			});
-			
+		 
 			function doexec()
 			{
 					//处理
@@ -82,7 +90,7 @@
 							_url=_baseUrl + "/UpdateTopicShow_status";
 							_id=strid.substring(2,strid.length);
 						}
-						console.log(_url)
+					 
 						 mui.ajax({
 						type: "post",
 						url: _url,
@@ -104,7 +112,7 @@
 				});
 			});
 			}
-				var state = getState();
+			
 			var p = 1;
 			function pulldownRefresh() {
 			var strwhere=" 1=1";
@@ -134,6 +142,8 @@
 							{
 						var topic_list = $("#topic_list");
 						topic_list.html("");
+							var state = getState();
+							
 						$.each(data.detail.list, function(index, _data) {
 							var span = getTopicTab(_data);
 							//权限控制
@@ -207,11 +217,12 @@
 						mui('#pullrefresh').pullRefresh().endPullupToRefresh((p > data.detail.totalRow)); //参数为true代表没有更多数据了。
 						var topic_list = $("#topic_list");
 							topic_list.html("");
-						
+						var state = getState(); 
 						$.each(data.detail.list, function(index, _data) {
 							var span = getTopicTab(_data);										//权限控制
 						var prb=""; var pre="";
-							 if(state.grade== '99')//管理员
+							
+						if(state.grade== '99')//管理员
 							{
 							prb=	'<div class="mui-slider-right mui-disabled"> ' +
 						'<button id=zd' + _data.ID + ' class="mui-btn mui-btn-purple">置顶</button>' +

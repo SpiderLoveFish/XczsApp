@@ -47,6 +47,7 @@
 		</header>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/bbscommon.js"></script>
+		<script type="text/javascript" src="../js/app.js" ></script>
 		<script>
 			var menu = null,
 				main = null;
@@ -108,16 +109,13 @@
 				});
 			}
 			function reflashlist(tab) {
-			 
-				var list = plus.webview.getWebviewById('list');
+					var list = plus.webview.getWebviewById('list');
 						plus.storage.setItem(_tab_, tab);
+						//mui.fire(list,"show")
 						list.loadURL("list.html");
 						list.reload();
 			}
-						 //敲击顶部导航，内容区回到顶部
-			document.querySelector('header').addEventListener('doubletap', function() {
-				main.children()[0].evalJS('mui.scrollTo(0, 100)');
-			});
+		
 		</script>
 	</body>
 

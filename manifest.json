@@ -167,8 +167,8 @@
 				"ios": {
 					"iphone": {
 						"default": "", /*iPhone3启动图片选，分辨率：320x480*/
-						"retina35": "",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-						"retina40": ""
+						"retina35": "/Users/spider/Downloads/rar/APPPIC/640-960.png",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
+						"retina40": "/Users/spider/Downloads/rar/APPPIC/640-1136.png","retina55":"/Users/spider/Downloads/rar/APPPIC/1242-2208.png","retina47":"/Users/spider/Downloads/rar/APPPIC/750-1334.png","retina55l":"/Users/spider/Downloads/rar/APPPIC/2208-1242.png"
 					},
 					"ipad": {
 						"portrait": "", /*iPad竖屏启动图片，分辨率：768x1004*/
@@ -183,10 +183,10 @@
 				},
 				"android": {
 					"mdpi": "", /*普通屏启动图片，分辨率：240x282*/
-					"ldpi": "", /*大屏启动图片，分辨率：320x442*/
-					"hdpi": "", /*高分屏启动图片，分辨率：480x762*/
-					"xhdpi": "", /*720P高分屏启动图片，分辨率：720x1242*/
-					"xxhdpi": ""
+					"ldpi": "/Users/spider/Downloads/rar/APPPIC/640-960.png", /*大屏启动图片，分辨率：320x442*/
+					"hdpi": "/Users/spider/Downloads/rar/APPPIC/640-960.png", /*高分屏启动图片，分辨率：480x762*/
+					"xhdpi": "/Users/spider/Downloads/rar/APPPIC/750-1334.png", /*720P高分屏启动图片，分辨率：720x1242*/
+					"xxhdpi": "/Users/spider/Downloads/rar/APPPIC/1242-2208.png"
 				}
 			}
 		}

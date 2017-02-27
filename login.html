@@ -78,7 +78,7 @@
 			var autoLoginButton;
 			var loginWebview;
 			mui.plusReady(function() {
-				
+					plus.navigator.setStatusBarBackground('#ffffff');
 				//读取本地存储，检查是否为首次启动
 				var showGuide = plus.storage.getItem("lauchFlag");
 				if (showGuide) {
@@ -161,6 +161,7 @@
 					}
 					plus.nativeUI.showWaiting("登录等待中...");
 					console.log(_url)
+					if(_url=="")setUrl("http://mb.xczs.co")
 					mui.ajax({
 						type: "get",
 						url: _url + '/webserver/WebService1.asmx/GetLogin',
@@ -173,6 +174,7 @@
 						async: true,
 						dataType: "json",
 						success: function(data) {
+							console.log(data.code)
 							if (data.code != '200') {
 									plus.nativeUI.closeWaiting();
 								plus.nativeUI.toast(data.description);
@@ -191,8 +193,8 @@
 									//特意每次登录刷新下setting页面
 								var	parent = plus.webview.getWebviewById("bottomhtml/setting.html");
 									mui.fire(parent, "show");
-									parent = plus.webview.getWebviewById("bottomhtml/inform.html");
-									mui.fire(parent, "show");
+//									parent = plus.webview.getWebviewById("bottomhtml/inform.html");
+//									mui.fire(parent, "show");
 								} else {
 									plus.nativeUI.toast('用户名或密码错误!');
 									plus.nativeUI.closeWaiting();

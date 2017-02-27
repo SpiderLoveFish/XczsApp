@@ -13,7 +13,7 @@
 		<link href="../css/mui.listpicker.css" rel="stylesheet" />
 		<link href="../css/mui.poppicker.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../css/bbsapp.css" />
-		<link rel="stylesheet" href="../dist/css/wangEditor-mobile.min.css" />
+		<link rel="stylesheet" href="../wangEditor/css/wangEditor.min.css" />
 		<!--App自定义的css-->
 		
 	</head>
@@ -34,32 +34,20 @@
 			<div class="form-group">
 				<input type="text" id="title" value="" placeholder="标题" class="form-control">
 			</div>
- 			<div class="container" style="border:1px solid darkgray; min-height: 200px;">
-		<textarea placeholder="内容" rows="3" id="content" ></textarea>
+ 			<!--<div class="container" style="border:1px solid darkgray; min-height: 200px;">-->
+		<textarea placeholder="内容" rows="5" style="height: 400px;" id="content" ></textarea>
  		 
-			<!--<div class="mui-input-group">
-				<div class="mui-input-row">
-					<input type="hidden" id="sid" value="8">
-					<input type="text" id="showSectionPicker" disabled="disabled" value="灌水">
-				</div>
-				<div class="mui-input-row">
-					<input type="text" id="title" value="" placeholder="标题10字以上">
-				</div>
-			</div>
-			<div class="mui-input-row">
-				<textarea placeholder="内容" rows="5" id="content" name="content" style="height: 400px;"></textarea>
-			</div>-->
-		</div>
+		 
+		<!--</div>-->
 			</body>
  
 				<script src="../js/mui.min.js"></script>
-	
+		 <script type="text/javascript" src="../js/jquery.min.js" ></script>
 		<script src="../js/mui.listpicker.js"></script>
 		<script src="../js/mui.poppicker.js"></script>
 		<script src="../js/bbscommon.js"></script>
-	<script type="text/javascript" src="../dist/js/lib/zepto.js"></script>
-	<script type="text/javascript" src="../dist/js/lib/zepto.touch.js"></script>
-	<script type="text/javascript" src="../dist/js/wangEditor-mobile.min.js"></script>
+		<script type="text/javascript" src="../js/app.js" ></script>
+	<script src="../wangEditor/js/wangEditor.min.js"></script>
  	 
 		<script type="text/javascript" charset="utf-8">
 		  mui.init();
@@ -67,25 +55,47 @@
 			var pickerData = [];
 			mui.plusReady(function() {
 				getSection();
-	  var editor = new ___E('content');
-	  editor.config.happy = [
-		    'images/1.gif', 
-		      'images/1.gif'
-		];
-	  editor.config.menus = [
-			    'head',
-			    'bold',
-			    'color',
-			    'quote',
-			    'list',
-			   // 'img',
-			    'happy',
-			    'check'
-			];
-	 // editor.config.testHostname = 'http://mb.xczs.co';
-	 	//editor.config.uploadImgUrl = '/uploadedFiles';
-		
-		      editor.init(); 
+			var editor = new wangEditor("content");
+        			// 自定义菜单
+		        editor.config.menus = [
+		            'bold',
+		            'underline',
+		            'italic',
+		            'forecolor',
+		            'bgcolor',
+		            'quote',
+		            'fontsize',
+		            'head',
+		            'unorderlist',
+		            'emotion',
+		             'img',
+                    'fullscreen' 
+		           // 'img'
+		        ];
+		      
+		        editor.config.uploadImgUrl ="http://mb.xczs.co/Data/uploadbbs.ashx";
+		       
+		       
+		       editor.create();
+//	  var editor = new ___E('content');
+//	  editor.config.happy = [
+//		    'images/1.gif', 
+//		      'images/1.gif'
+//		];
+//	  editor.config.menus = [
+//			    'head',
+//			    'bold',
+//			    'color',
+//			    'quote',
+//			    'list',
+//			   // 'img',
+//			    'happy',
+//			    'check'
+//			];
+//	 // editor.config.testHostname = 'http://mb.xczs.co';
+//	 	//editor.config.uploadImgUrl = '/uploadedFiles';
+//		
+//		      editor.init(); 
          
  		});
 	
@@ -151,6 +161,9 @@
 								title.value = "";
 								content.value = "";
 								mui.toast(data.description);
+								mui.back();
+//							var	parent = plus.webview.currentWebview().parent();
+//									mui.fire(parent, "show");
 							} else {
 								mui.toast(data.description);
 							}

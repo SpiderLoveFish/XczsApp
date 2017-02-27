@@ -136,6 +136,8 @@
 						    mui('#pullrefresh').pullRefresh().refresh(true);	
 							}else
 							{
+								var topic_list = $("#cus_detail");
+						topic_list.html("");
 						   var table = document.body.querySelector('.mui-table-view');
 					var cells = document.body.querySelectorAll('.mui-table-view-cell');
 							$.each(data.detail.list, function(index, _data) {

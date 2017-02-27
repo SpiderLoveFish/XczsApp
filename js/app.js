@@ -2,14 +2,14 @@
 function getSettings() {
 	var settingsText = localStorage.getItem('$settings') || "{}";
 	return JSON.parse(settingsText);
-
+ 
 }
 //设置
 function setSettings(settings) {
 	settings = settings || {};
 	localStorage.setItem('$settings', JSON.stringify(settings));
 }
-//状态
+//状态 
 function getState() {
 	var stateText = localStorage.getItem('$state') || "{}";
 	return JSON.parse(stateText);
